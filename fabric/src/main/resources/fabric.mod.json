@@ -1,0 +1,39 @@
+{
+  "schemaVersion": 1,
+  "id": "sop",
+  "version": "${version}",
+
+  "name": "Songs Of Power",
+  "description": "",
+  "authors": [],
+  "contact": {},
+
+  "license": "All Rights Reserved",
+  "icon": "icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.iafenvoy.sop.fabric.SongsOfPowerFabric"
+    ],
+    "client": [
+      "com.iafenvoy.sop.fabric.SongsOfPowerFabricClient"
+    ],
+    "cardinal-components-entity": [
+      "com.iafenvoy.sop.fabric.component.ModComponentEntry"
+    ]
+  },
+  "custom": {
+    "cardinal-components": [
+      "sop:songs_power"
+    ]
+  },
+  "mixins": [
+    "sop.mixins.json",
+    "sop-common.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.5",
+    "minecraft": ">=1.20.1"
+  }
+}
