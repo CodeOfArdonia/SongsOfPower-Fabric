@@ -1,6 +1,6 @@
 package com.iafenvoy.sop.impl.forge;
 
-import com.iafenvoy.sop.data.SongPowerData;
+import com.iafenvoy.sop.power.SongPowerData;
 import com.iafenvoy.sop.forge.component.SongPowerDataProvider;
 import com.iafenvoy.sop.forge.component.SongPowerDataStorage;
 import net.minecraft.entity.LivingEntity;

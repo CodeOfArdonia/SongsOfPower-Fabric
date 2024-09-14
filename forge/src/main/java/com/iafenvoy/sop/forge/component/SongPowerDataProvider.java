@@ -1,5 +1,6 @@
 package com.iafenvoy.sop.forge.component;
 
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.math.Direction;
 import net.minecraftforge.common.capabilities.Capability;
@@ -15,6 +16,11 @@ public class SongPowerDataProvider implements ICapabilitySerializable<NbtCompoun
     });
     private SongPowerDataStorage storage;
     private final LazyOptional<SongPowerDataStorage> storageLazyOptional = LazyOptional.of(this::getOrCreateStorage);
+    private final PlayerEntity player;
+
+    public SongPowerDataProvider(PlayerEntity player) {
+        this.player = player;
+    }
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> capability, @Nullable Direction arg) {

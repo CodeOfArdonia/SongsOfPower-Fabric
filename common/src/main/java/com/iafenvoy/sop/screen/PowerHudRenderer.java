@@ -1,8 +1,8 @@
 package com.iafenvoy.sop.screen;
 
 import com.iafenvoy.sop.SongsOfPower;
-import com.iafenvoy.sop.data.PowerType;
-import com.iafenvoy.sop.data.SongPowerData;
+import com.iafenvoy.sop.power.PowerType;
+import com.iafenvoy.sop.power.SongPowerData;
 import com.iafenvoy.sop.registry.SopKeybindings;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -19,6 +19,8 @@ public class PowerHudRenderer {
     private static final Identifier BARS_TEXTURE = new Identifier(SongsOfPower.MOD_ID, "textures/gui/bars.png");
 
     public static void render(MinecraftClient client, DrawContext context, float tickDelta) {
+        assert client.player != null;
+        if (client.player.isSpectator()) return;
         SongPowerData data = SongPowerData.byPlayer(client.player);
         for (PowerType type : PowerType.values())
             renderOne(context, data.get(type));
@@ -33,7 +35,7 @@ public class PowerHudRenderer {
         final int maxHeight = 60;
         context.drawTexture(BARS_TEXTURE, x - 7, y - 38, 13 + 13 * data.getType().getColorOffset(), 0, 7, maxHeight);
         int newHeight = (int) (maxHeight * data.getRemainMana() / data.getMaxMana());
-        context.drawTexture(BARS_TEXTURE, x - 7, y - 38, 13 + 13 * data.getType().getColorOffset(), maxHeight - newHeight, 7, newHeight);
+        context.drawTexture(BARS_TEXTURE, x - 7, y - 38, 19 + 13 * data.getType().getColorOffset(), maxHeight - newHeight, 7, newHeight);
         //Render Power Icon/Slot
         context.drawTexture(WIDGETS_TEXTURE, x, y, 60, 23, 22, 22);
         if (binding.isPressed()) context.drawTexture(WIDGETS_TEXTURE, x, y, 1, 23, 23, 23);

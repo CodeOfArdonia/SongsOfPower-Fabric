@@ -1,7 +1,7 @@
 package com.iafenvoy.sop.fabric.component;
 
 import com.iafenvoy.sop.SongsOfPower;
-import com.iafenvoy.sop.data.SongPowerData;
+import com.iafenvoy.sop.power.SongPowerData;
 import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
 import dev.onyxstudios.cca.api.v3.component.ComponentV3;
@@ -19,7 +19,7 @@ public class SongPowerComponent implements ComponentV3, AutoSyncedComponent, Com
 
     public SongPowerComponent(PlayerEntity entity) {
         this.entity = entity;
-        this.data = new SongPowerData();
+        this.data = new SongPowerData(entity);
     }
 
     public PlayerEntity getEntity() {
@@ -42,6 +42,6 @@ public class SongPowerComponent implements ComponentV3, AutoSyncedComponent, Com
 
     @Override
     public void tick() {
-        this.data.tick(entity);
+        this.data.tick();
     }
 }

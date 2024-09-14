@@ -1,4 +1,4 @@
-package com.iafenvoy.sop.data;
+package com.iafenvoy.sop.power;
 
 import java.util.ArrayList;
 import java.util.HashMap;

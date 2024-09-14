@@ -1,9 +1,8 @@
-package com.iafenvoy.sop.data;
+package com.iafenvoy.sop.power;
 
 import com.iafenvoy.sop.impl.ComponentManager;
 import com.iafenvoy.sop.util.Serializable;
 import com.iafenvoy.sop.util.Tickable;
-import net.minecraft.entity.player.HungerManager;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
@@ -12,12 +11,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class SongPowerData implements Serializable, Tickable {
+    private final PlayerEntity player;
     private boolean enabled = false;
     private final Map<PowerType, SinglePowerData> byType = new HashMap<>();
     private final SinglePowerData aggressium = new SinglePowerData(this, PowerType.AGGRESSIUM);
     private final SinglePowerData mobilium = new SinglePowerData(this, PowerType.MOBILIUM);
     private final SinglePowerData protisium = new SinglePowerData(this, PowerType.PROTISIUM);
     private final SinglePowerData supportium = new SinglePowerData(this, PowerType.SUPPORTIUM);
+
+    public SongPowerData(PlayerEntity player) {
+        this.player = player;
+    }
 
     @Override
     public void encode(NbtCompound tag) {
@@ -38,11 +42,11 @@ public class SongPowerData implements Serializable, Tickable {
     }
 
     @Override
-    public void tick(PlayerEntity player) {
-        this.aggressium.tick(player);
-        this.mobilium.tick(player);
-        this.protisium.tick(player);
-        this.supportium.tick(player);
+    public void tick() {
+        this.aggressium.tick();
+        this.mobilium.tick();
+        this.protisium.tick();
+        this.supportium.tick();
     }
 
     public boolean isEnabled() {
@@ -79,6 +83,11 @@ public class SongPowerData implements Serializable, Tickable {
 
     public SinglePowerData getSupportium() {
         return this.supportium;
+    }
+
+    public boolean powerEnabled(PowerType type, SongPower power) {
+        SinglePowerData data = this.get(type);
+        return data.isEnabled() && data.getActivePower() == power;
     }
 
     public static SongPowerData byPlayer(PlayerEntity player) {
@@ -124,14 +133,14 @@ public class SongPowerData implements Serializable, Tickable {
         }
 
         @Override
-        public void tick(PlayerEntity player) {
+        public void tick() {
+            this.activePower.tick(this, this.parent.player, this.parent.player.getEntityWorld());
             if (this.enabled) this.remainMana -= this.activePower.mana();
             this.remainMana += this.recoverMana;
             if (this.remainMana > this.maxMana) this.remainMana = this.maxMana;
             if (this.remainMana < 0) {
                 this.remainMana += this.maxMana;
-                HungerManager manager = player.getHungerManager();
-                manager.addExhaustion(4);
+                parent.player.getHungerManager().addExhaustion(4);
             }
         }
 
@@ -144,6 +153,10 @@ public class SongPowerData implements Serializable, Tickable {
         }
 
         public void setEnabled(boolean enabled) {
+            if (!this.enabled && enabled)
+                this.activePower.apply(parent.player, parent.player.getEntityWorld());
+            if (this.enabled && !enabled)
+                this.activePower.unapply(parent.player, parent.player.getEntityWorld());
             this.enabled = enabled;
         }
 
@@ -160,6 +173,7 @@ public class SongPowerData implements Serializable, Tickable {
         }
 
         public void setActivePower(SongPower activePower) {
+            this.disable();
             this.activePower = activePower;
         }
 

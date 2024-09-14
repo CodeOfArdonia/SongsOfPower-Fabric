@@ -1,6 +1,6 @@
 package com.iafenvoy.sop.impl;
 
-import com.iafenvoy.sop.data.SongPowerData;
+import com.iafenvoy.sop.power.SongPowerData;
 import dev.architectury.injectables.annotations.ExpectPlatform;
 import net.minecraft.entity.LivingEntity;
 import org.apache.commons.lang3.NotImplementedException;

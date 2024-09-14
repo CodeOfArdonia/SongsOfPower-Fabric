@@ -1,7 +1,7 @@
 package com.iafenvoy.sop.forge;
 
 import com.iafenvoy.sop.SongsOfPower;
-import com.iafenvoy.sop.data.SongPowerData;
+import com.iafenvoy.sop.power.SongPowerData;
 import com.iafenvoy.sop.forge.component.SongPowerDataProvider;
 import com.iafenvoy.sop.impl.ComponentManager;
 import dev.architectury.platform.forge.EventBuses;
@@ -35,7 +35,7 @@ public class SongsOfPowerForge {
             if (event.getObject() instanceof PlayerEntity player) {
                 boolean isServerNotFake = player instanceof ServerPlayerEntity && !(player instanceof FakePlayer);
                 if ((isServerNotFake || player instanceof AbstractClientPlayerEntity) && !player.getCapability(SongPowerDataProvider.CAPABILITY).isPresent())
-                    event.addCapability(new Identifier(SongsOfPower.MOD_ID, "song_power"), new SongPowerDataProvider());
+                    event.addCapability(new Identifier(SongsOfPower.MOD_ID, "song_power"), new SongPowerDataProvider(player));
             }
         }
 
@@ -45,7 +45,7 @@ public class SongsOfPowerForge {
             List<ServerPlayerEntity> players = server.getPlayerManager().getPlayerList();
             for (PlayerEntity player : players) {
                 SongPowerData data = ComponentManager.getSongPowerData(player);
-                if (data != null) data.tick(player);
+                if (data != null) data.tick();
             }
         }
     }
