@@ -6,22 +6,23 @@ import dev.onyxstudios.cca.api.v3.component.ComponentKey;
 import dev.onyxstudios.cca.api.v3.component.ComponentRegistryV3;
 import dev.onyxstudios.cca.api.v3.component.ComponentV3;
 import dev.onyxstudios.cca.api.v3.component.sync.AutoSyncedComponent;
-import net.minecraft.entity.LivingEntity;
+import dev.onyxstudios.cca.api.v3.component.tick.CommonTickingComponent;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.util.Identifier;
 
-public class SongPowerComponent implements ComponentV3, AutoSyncedComponent {
-    public static final ComponentKey<SongPowerComponent> FRACTION_COMPONENT = ComponentRegistryV3.INSTANCE.getOrCreate(Identifier.of(SongsOfPower.MOD_ID, "songs_power"), SongPowerComponent.class);
+public class SongPowerComponent implements ComponentV3, AutoSyncedComponent, CommonTickingComponent {
+    public static final ComponentKey<SongPowerComponent> SONG_POWER_COMPONENT = ComponentRegistryV3.INSTANCE.getOrCreate(Identifier.of(SongsOfPower.MOD_ID, "song_power"), SongPowerComponent.class);
 
-    private final LivingEntity entity;
+    private final PlayerEntity entity;
     private final SongPowerData data;
 
-    public SongPowerComponent(LivingEntity entity) {
+    public SongPowerComponent(PlayerEntity entity) {
         this.entity = entity;
         this.data = new SongPowerData();
     }
 
-    public LivingEntity getEntity() {
+    public PlayerEntity getEntity() {
         return this.entity;
     }
 
@@ -37,5 +38,10 @@ public class SongPowerComponent implements ComponentV3, AutoSyncedComponent {
     @Override
     public void writeToNbt(NbtCompound tag) {
         this.data.encode(tag);
+    }
+
+    @Override
+    public void tick() {
+        this.data.tick(entity);
     }
 }

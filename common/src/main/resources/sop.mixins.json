@@ -1,11 +1,13 @@
 {
   "required": true,
   "minVersion": "0.8",
-  "package": "com.iafenvoy.sop.fabric.mixin",
+  "package": "com.iafenvoy.sop.mixin",
   "compatibilityLevel": "JAVA_17",
   "mixins": [
   ],
   "client": [
+    "InGameHudMixin",
+    "PlayerEntityRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1

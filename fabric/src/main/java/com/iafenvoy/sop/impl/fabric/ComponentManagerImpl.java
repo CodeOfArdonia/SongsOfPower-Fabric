@@ -11,7 +11,7 @@ import java.util.Optional;
 public class ComponentManagerImpl {
     @Nullable
     public static SongPowerData getSongPowerData(LivingEntity entity) {
-        Optional<SongPowerComponent> data = SongPowerComponent.FRACTION_COMPONENT.maybeGet(entity);
+        Optional<SongPowerComponent> data = SongPowerComponent.SONG_POWER_COMPONENT.maybeGet(entity);
         return data.map(SongPowerComponent::getData).orElse(null);
     }
 }

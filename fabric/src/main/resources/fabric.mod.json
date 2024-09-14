@@ -25,12 +25,11 @@
   },
   "custom": {
     "cardinal-components": [
-      "sop:songs_power"
+      "sop:song_power"
     ]
   },
   "mixins": [
-    "sop.mixins.json",
-    "sop-common.mixins.json"
+    "sop.mixins.json"
   ],
   "depends": {
     "fabricloader": ">=0.16.5",
