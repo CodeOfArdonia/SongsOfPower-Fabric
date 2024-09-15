@@ -1,6 +1,7 @@
 package com.iafenvoy.sop.power;
 
 import com.iafenvoy.sop.impl.ComponentManager;
+import com.iafenvoy.sop.item.SongCubeItem;
 import com.iafenvoy.sop.util.Serializable;
 import com.iafenvoy.sop.util.Tickable;
 import net.minecraft.entity.player.PlayerEntity;
@@ -19,8 +20,22 @@ public class SongPowerData implements Serializable, Tickable {
     private final SinglePowerData protisium = new SinglePowerData(this, PowerType.PROTISIUM);
     private final SinglePowerData supportium = new SinglePowerData(this, PowerType.SUPPORTIUM);
 
+    private boolean modified = false;
+
     public SongPowerData(PlayerEntity player) {
         this.player = player;
+    }
+
+    public boolean isModified() {
+        return this.modified;
+    }
+
+    public void markDirty() {
+        this.modified = true;
+    }
+
+    public void clean() {
+        this.modified = false;
     }
 
     @Override
@@ -55,6 +70,7 @@ public class SongPowerData implements Serializable, Tickable {
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+        this.markDirty();
     }
 
     public void enable() {
@@ -87,7 +103,7 @@ public class SongPowerData implements Serializable, Tickable {
 
     public boolean powerEnabled(PowerType type, SongPower power) {
         SinglePowerData data = this.get(type);
-        return data.isEnabled() && data.getActivePower() == power;
+        return data.hasPower() && data.isEnabled() && data.getActivePower() == power;
     }
 
     public static SongPowerData byPlayer(PlayerEntity player) {
@@ -112,7 +128,6 @@ public class SongPowerData implements Serializable, Tickable {
 
         @Override
         public void encode(NbtCompound tag) {
-            tag.putString("activePower", this.activePower.id());
             tag.putBoolean("enabled", this.enabled);
             tag.putDouble("maxMana", this.maxMana);
             tag.putDouble("remainMana", this.remainMana);
@@ -124,24 +139,40 @@ public class SongPowerData implements Serializable, Tickable {
 
         @Override
         public void decode(NbtCompound tag) {
-            this.activePower = this.type.getPowerById(tag.getString("activePower"));
             this.enabled = tag.getBoolean("enabled");
             this.maxMana = tag.getDouble("maxMana");
             this.remainMana = tag.getDouble("remainMana");
             this.recoverMana = tag.getDouble("recoverMana");
-            this.holdItem = ItemStack.fromNbt(tag.getCompound("holdItem"));
+            this.setHoldItem(ItemStack.fromNbt(tag.getCompound("holdItem")));
         }
 
         @Override
         public void tick() {
-            this.activePower.tick(this, this.parent.player, this.parent.player.getEntityWorld());
-            if (this.enabled) this.remainMana -= this.activePower.mana();
+            if (this.enabled && !this.parent.player.getEntityWorld().isClient) {
+                this.activePower.tick(this, this.parent.player, this.parent.player.getEntityWorld());
+                this.remainMana -= this.activePower.mana();
+            }
             this.remainMana += this.recoverMana;
             if (this.remainMana > this.maxMana) this.remainMana = this.maxMana;
             if (this.remainMana < 0) {
                 this.remainMana += this.maxMana;
-                parent.player.getHungerManager().addExhaustion(4);
+                this.parent.player.addExhaustion(4);
             }
+        }
+
+        public void keyPress() {
+            if (this.activePower.isEmpty()) {
+                this.disable();
+                return;
+            }
+            if (this.isEnabled()) {
+                if (this.activePower.persist()) this.disable();
+                else this.activePower.unapply(this.parent.player, this.parent.player.getEntityWorld());
+            } else {
+                if (this.activePower.persist()) this.enable();
+                else this.activePower.apply(this.parent.player, this.parent.player.getEntityWorld());
+            }
+            this.parent.markDirty();
         }
 
         public PowerType getType() {
@@ -149,7 +180,7 @@ public class SongPowerData implements Serializable, Tickable {
         }
 
         public boolean isEnabled() {
-            return this.enabled && this.parent.enabled;
+            return this.enabled;//&& this.parent.enabled;
         }
 
         public void setEnabled(boolean enabled) {
@@ -158,6 +189,7 @@ public class SongPowerData implements Serializable, Tickable {
             if (this.enabled && !enabled)
                 this.activePower.unapply(parent.player, parent.player.getEntityWorld());
             this.enabled = enabled;
+            this.parent.markDirty();
         }
 
         public void enable() {
@@ -172,9 +204,11 @@ public class SongPowerData implements Serializable, Tickable {
             return this.activePower;
         }
 
-        public void setActivePower(SongPower activePower) {
-            this.disable();
+        private void setActivePower(SongPower activePower) {
+            if (!this.activePower.isEmpty() && this.activePower != activePower)
+                this.disable();
             this.activePower = activePower;
+            this.parent.markDirty();
         }
 
         public ItemStack getHoldItem() {
@@ -184,11 +218,20 @@ public class SongPowerData implements Serializable, Tickable {
         public ItemStack pickHoldItem() {
             ItemStack holdItem = this.holdItem;
             this.holdItem = ItemStack.EMPTY;
+            this.setActivePower(SongPower.EMPTY);
             return holdItem;
         }
 
         public void setHoldItem(ItemStack holdItem) {
-            this.holdItem = holdItem;
+            if (holdItem.getItem() instanceof SongCubeItem songCube) {
+                this.holdItem = holdItem;
+                this.setActivePower(songCube.getPower(holdItem));
+            } else if (holdItem.isEmpty()) {
+                this.holdItem = ItemStack.EMPTY;
+                this.setActivePower(SongPower.EMPTY);
+            } else
+                throw new IllegalArgumentException("holdItem should be a song cube.");
+            this.parent.markDirty();
         }
 
         public double getMaxMana() {
@@ -197,6 +240,10 @@ public class SongPowerData implements Serializable, Tickable {
 
         public double getRemainMana() {
             return this.remainMana;
+        }
+
+        public boolean hasPower() {
+            return !this.holdItem.isEmpty() && !this.activePower.isEmpty();
         }
     }
 }

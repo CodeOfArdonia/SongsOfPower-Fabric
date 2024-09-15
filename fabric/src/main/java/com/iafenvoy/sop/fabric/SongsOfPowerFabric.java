@@ -7,5 +7,6 @@ public class SongsOfPowerFabric implements ModInitializer {
     @Override
     public void onInitialize() {
         SongsOfPower.init();
+        SongsOfPower.process();
     }
 }

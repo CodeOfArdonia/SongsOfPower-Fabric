@@ -7,5 +7,6 @@ public class SongsOfPowerFabricClient implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         SongsOfPowerClient.init();
+        SongsOfPowerClient.process();
     }
 }

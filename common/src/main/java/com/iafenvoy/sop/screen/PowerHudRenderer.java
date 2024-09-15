@@ -30,7 +30,7 @@ public class PowerHudRenderer {
         int width = context.getScaledWindowWidth();
         int height = context.getScaledWindowHeight();
         int x = width / 2 + 100 + data.getType().ordinal() * 30, y = height - 22;
-        KeyBinding binding = SopKeybindings.KEY_BINDINGS.get(data.getType().ordinal());
+        SopKeybindings.KeyBindingHolder binding = SopKeybindings.KEY_BINDINGS.get(data.getType().ordinal());
         //Render Mana Bar
         final int maxHeight = 60;
         context.drawTexture(BARS_TEXTURE, x - 7, y - 38, 13 + 13 * data.getType().getColorOffset(), 0, 7, maxHeight);
@@ -38,7 +38,7 @@ public class PowerHudRenderer {
         context.drawTexture(BARS_TEXTURE, x - 7, y - 38, 19 + 13 * data.getType().getColorOffset(), maxHeight - newHeight, 7, newHeight);
         //Render Power Icon/Slot
         context.drawTexture(WIDGETS_TEXTURE, x, y, 60, 23, 22, 22);
-        if (binding.isPressed()) context.drawTexture(WIDGETS_TEXTURE, x, y, 1, 23, 23, 23);
+        if (binding.isPressed() || data.isEnabled()) context.drawTexture(WIDGETS_TEXTURE, x, y, 1, 23, 23, 23);
         ItemStack stack = data.getActivePower().icon();
         if (stack.isEmpty()) stack = new ItemStack(Items.BARRIER);
         context.drawItem(stack, x + 3, y + 3);

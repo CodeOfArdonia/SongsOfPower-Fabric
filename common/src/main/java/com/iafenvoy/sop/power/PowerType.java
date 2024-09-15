@@ -1,22 +1,26 @@
 package com.iafenvoy.sop.power;
 
+import net.minecraft.util.Formatting;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public enum PowerType {
-    AGGRESSIUM("aggressium", 1),
-    MOBILIUM("mobilium", 3),
-    PROTISIUM("protisium", 0),
-    SUPPORTIUM("supportium", 2);
+    AGGRESSIUM("aggressium", Formatting.RED, 1),
+    MOBILIUM("mobilium", Formatting.YELLOW, 3),
+    PROTISIUM("protisium", Formatting.AQUA, 0),
+    SUPPORTIUM("supportium", Formatting.GREEN, 2);
     private final String id;
+    private final Formatting color;
     private final int colorOffset;
     private final List<SongPower> powers = new ArrayList<>();
     private final Map<String, SongPower> byId = new HashMap<>();
 
-    PowerType(String id, int colorOffset) {
+    PowerType(String id, Formatting color, int colorOffset) {
         this.id = id;
+        this.color = color;
         this.colorOffset = colorOffset;
     }
 
@@ -26,6 +30,10 @@ public enum PowerType {
 
     public String getId() {
         return this.id;
+    }
+
+    public Formatting getColor() {
+        return this.color;
     }
 
     public void registerPower(SongPower power) {

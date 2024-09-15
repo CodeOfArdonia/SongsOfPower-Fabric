@@ -39,7 +39,7 @@ public class SongPowerDataProvider implements ICapabilitySerializable<NbtCompoun
 
     private SongPowerDataStorage getOrCreateStorage() {
         if (this.storage == null)
-            this.storage = new SongPowerDataStorage();
+            this.storage = new SongPowerDataStorage(this.player);
         return this.storage;
     }
 }
