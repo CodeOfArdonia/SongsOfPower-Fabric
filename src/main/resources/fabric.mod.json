@@ -1,0 +1,42 @@
+{
+  "schemaVersion": 1,
+  "id": "sop",
+  "version": "${version}",
+
+  "name": "Songs Of Power",
+  "description": "",
+  "authors": [
+    "IAFEnvoy"
+  ],
+  "contact": {
+    "sources": "https://github.com/ArkTechMC/SongsOfPower"
+  },
+
+  "license": "All Rights Reserved",
+  "icon": "icon.png",
+
+  "environment": "*",
+  "entrypoints": {
+    "main": [
+      "com.iafenvoy.sop.SongsOfPower"
+    ],
+    "client": [
+      "com.iafenvoy.sop.SongsOfPowerClient"
+    ],
+    "cardinal-components-entity": [
+      "com.iafenvoy.sop.component.ModComponentEntry"
+    ]
+  },
+  "custom": {
+    "cardinal-components": [
+      "sop:song_power"
+    ]
+  },
+  "mixins": [
+    "sop.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.16.5",
+    "minecraft": ">=1.20.1"
+  }
+}
