@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Songs Of Power",
-  "description": "Add song abilities to game.",
+  "description": "Add song abilities from Songs of War Animation.",
   "authors": [
     "IAFEnvoy"
   ],
