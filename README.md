@@ -10,7 +10,7 @@ This mod add song abilities from Songs of War Animation.
 
 `/songpower use/replace` learn ability from song stone in your hand.
 
-## Added abilities
+## Currently Added abilities
 
 ### Aggressium
 
