@@ -38,12 +38,12 @@ public enum PowerType {
 
     public void registerPower(SongPower power) {
         this.powers.add(power);
-        SongPower p = this.byId.put(power.id(), power);
+        SongPower p = this.byId.put(power.getId(), power);
         if (p != null)
-            throw new IllegalArgumentException("Duplicated id " + p.id() + " for song power type " + this.id + "!");
+            throw new IllegalArgumentException("Duplicated id " + p.getId() + " for song power type " + this.id + "!");
     }
 
     public SongPower getPowerById(String id) {
-        return this.powers.stream().filter(x -> x.id().equals(id)).findFirst().orElse(SongPower.EMPTY);
+        return this.powers.stream().filter(x -> x.getId().equals(id)).findFirst().orElse(SongPower.EMPTY);
     }
 }

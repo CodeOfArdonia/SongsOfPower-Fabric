@@ -5,8 +5,12 @@
 
   "name": "Songs Of Power",
   "description": "",
-  "authors": [],
-  "contact": {},
+  "authors": [
+    "IAFEnvoy"
+  ],
+  "contact": {
+    "sources": "https://github.com/ArkTechMC/SongsOfPower"
+  },
 
   "license": "All Rights Reserved",
   "icon": "icon.png",

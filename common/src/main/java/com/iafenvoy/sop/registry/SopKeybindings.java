@@ -58,9 +58,8 @@ public final class SopKeybindings {
             this.keyBinding = keyBinding;
         }
 
-        public KeyBindingHolder registerPressCallback(BooleanConsumer consumer) {
+        public void registerPressCallback(BooleanConsumer consumer) {
             this.callback.add(consumer);
-            return this;
         }
 
         public void tick() {

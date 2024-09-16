@@ -1,0 +1,18 @@
+{
+  "mobiliflash": {
+    "sounds": [
+      {
+        "name": "sop:mobiliflash",
+        "stream": false
+      }
+    ]
+  },
+  "aggrosphere": {
+    "sounds": [
+      {
+        "name": "sop:aggrosphere",
+        "stream": false
+      }
+    ]
+  }
+}

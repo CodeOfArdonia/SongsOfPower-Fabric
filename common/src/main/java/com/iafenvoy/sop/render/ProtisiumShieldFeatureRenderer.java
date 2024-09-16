@@ -17,8 +17,11 @@ import net.minecraft.entity.player.PlayerEntity;
 
 @Environment(EnvType.CLIENT)
 public class ProtisiumShieldFeatureRenderer<T extends PlayerEntity, M extends PlayerEntityModel<T>> extends FeatureRenderer<T, M> {
+    private final SphereModel<T> sphereModel;
+
     public ProtisiumShieldFeatureRenderer(FeatureRendererContext<T, M> context) {
         super(context);
+        this.sphereModel = new SphereModel<>(SphereModel.createBodyLayer().createModel());
     }
 
     @Override
@@ -27,9 +30,8 @@ public class ProtisiumShieldFeatureRenderer<T extends PlayerEntity, M extends Pl
             matrices.push();
             matrices.scale(2.5f, 2.5f, 2.5f);
             matrices.translate(0, -0.8, 0);
-            SphereModel<T> sphereModel = new SphereModel<>(SphereModel.createBodyLayer().createModel());
             VertexConsumer consumer = vertexConsumers.getBuffer(RenderLayer.getEntityTranslucentEmissive(SphereModel.WHITE_TEXTURE));
-            sphereModel.render(matrices, consumer, light, OverlayTexture.DEFAULT_UV, 0, 1, 1, 0.1f);
+            this.sphereModel.render(matrices, consumer, light, OverlayTexture.DEFAULT_UV, 0, 1, 1, 0.1f);
             matrices.pop();
         }
     }

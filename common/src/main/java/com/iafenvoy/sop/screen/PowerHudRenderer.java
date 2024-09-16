@@ -8,7 +8,6 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.option.KeyBinding;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.util.Identifier;
@@ -35,11 +34,12 @@ public class PowerHudRenderer {
         final int maxHeight = 60;
         context.drawTexture(BARS_TEXTURE, x - 7, y - 38, 13 + 13 * data.getType().getColorOffset(), 0, 7, maxHeight);
         int newHeight = (int) (maxHeight * data.getRemainMana() / data.getMaxMana());
-        context.drawTexture(BARS_TEXTURE, x - 7, y - 38, 19 + 13 * data.getType().getColorOffset(), maxHeight - newHeight, 7, newHeight);
+        int reduceHeight = maxHeight - newHeight;
+        context.drawTexture(BARS_TEXTURE, x - 7, y - 38 + reduceHeight, 19 + 13 * data.getType().getColorOffset(), 0, 7, newHeight);
         //Render Power Icon/Slot
         context.drawTexture(WIDGETS_TEXTURE, x, y, 60, 23, 22, 22);
         if (binding.isPressed() || data.isEnabled()) context.drawTexture(WIDGETS_TEXTURE, x, y, 1, 23, 23, 23);
-        ItemStack stack = data.getActivePower().icon();
+        ItemStack stack = data.getActivePower().getIcon();
         if (stack.isEmpty()) stack = new ItemStack(Items.BARRIER);
         context.drawItem(stack, x + 3, y + 3);
     }
