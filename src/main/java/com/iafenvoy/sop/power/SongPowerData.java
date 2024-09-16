@@ -169,7 +169,7 @@ public class SongPowerData implements Serializable, Tickable {
         }
 
         public boolean isEnabled() {
-            return this.enabled;//&& this.parent.enabled;
+            return this.enabled && this.parent.enabled;
         }
 
         public void setEnabled(boolean enabled) {

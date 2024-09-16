@@ -6,12 +6,16 @@ import com.iafenvoy.sop.power.SongPowerData;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
+import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
+
+import java.util.Collection;
 
 public class SopCommands {
     public static void init() {
@@ -22,6 +26,16 @@ public class SopCommands {
                                 .executes(SopCommands::useSong)
                         ).then(CommandManager.literal("replace")
                                 .executes(SopCommands::replaceSong)
+                        ).then(CommandManager.literal("enable")
+                                .requires(source -> source.hasPermissionLevel(selection.dedicated ? 4 : 0))
+                                .then(CommandManager.argument("players", EntityArgumentType.players())
+                                        .executes(SopCommands::enableSong)
+                                )
+                        ).then(CommandManager.literal("disable")
+                                .requires(source -> source.hasPermissionLevel(selection.dedicated ? 4 : 0))
+                                .then(CommandManager.argument("players", EntityArgumentType.players())
+                                        .executes(SopCommands::disableSong)
+                                )
                         )
                 ));
     }
@@ -60,5 +74,19 @@ public class SopCommands {
         }
         source.sendFeedback(() -> Text.translatable("command." + SongsOfPower.MOD_ID + ".use_song.invalid"), false);
         return 0;
+    }
+
+    public static int enableSong(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+        Collection<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "players");
+        for (ServerPlayerEntity player : players) SongPowerData.byPlayer(player).enable();
+        context.getSource().sendFeedback(() -> Text.literal("Success!"), true);
+        return 1;
+    }
+
+    public static int disableSong(CommandContext<ServerCommandSource> context) throws CommandSyntaxException {
+        Collection<ServerPlayerEntity> players = EntityArgumentType.getPlayers(context, "players");
+        for (ServerPlayerEntity player : players) SongPowerData.byPlayer(player).disable();
+        context.getSource().sendFeedback(() -> Text.literal("Success!"), true);
+        return 1;
     }
 }

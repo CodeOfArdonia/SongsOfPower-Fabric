@@ -1,4 +1,12 @@
 {
+  "aggrosphere": {
+    "sounds": [
+      {
+        "name": "sop:aggrosphere",
+        "stream": false
+      }
+    ]
+  },
   "mobiliflash": {
     "sounds": [
       {
@@ -7,10 +15,18 @@
       }
     ]
   },
-  "aggrosphere": {
+  "protesphere": {
     "sounds": [
       {
-        "name": "sop:aggrosphere",
+        "name": "sop:protesphere",
+        "stream": false
+      }
+    ]
+  },
+  "protesphere_unapply": {
+    "sounds": [
+      {
+        "name": "sop:protesphere_unapply",
         "stream": false
       }
     ]

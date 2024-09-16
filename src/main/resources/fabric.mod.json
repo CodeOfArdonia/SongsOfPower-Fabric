@@ -4,7 +4,7 @@
   "version": "${version}",
 
   "name": "Songs Of Power",
-  "description": "",
+  "description": "Add song abilities to game.",
   "authors": [
     "IAFEnvoy"
   ],
@@ -13,7 +13,7 @@
   },
 
   "license": "All Rights Reserved",
-  "icon": "icon.png",
+  "icon": "logo.jpg",
 
   "environment": "*",
   "entrypoints": {

@@ -1,6 +1,5 @@
 package com.iafenvoy.sop.registry;
 
-import com.iafenvoy.neptune.util.Timeout;
 import com.iafenvoy.sop.entity.AggroSphereEntity;
 import com.iafenvoy.sop.power.PowerType;
 import com.iafenvoy.sop.power.SongPower;
@@ -45,6 +44,7 @@ public class SopPowers {
             });
     //Protisium
     public static final SongPower PROTESPHERE = new SongPower("protesphere", PowerType.PROTISIUM, new ItemStack(Items.SHIELD), 1, true)
+            .setApplySound(SopSounds.PROTESPHERE).setUnapplySound(SopSounds.PROTESPHERE_UNAPPLY)
             .onTick((data, player, world) -> player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 20, 3)));
 
     public static void init() {

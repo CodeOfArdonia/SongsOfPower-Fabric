@@ -21,6 +21,7 @@ public class PowerHudRenderer {
         assert client.player != null;
         if (client.player.isSpectator()) return;
         SongPowerData data = SongPowerData.byPlayer(client.player);
+        if (!data.isEnabled()) return;
         for (PowerType type : PowerType.values())
             renderOne(context, data.get(type));
     }

@@ -19,8 +19,9 @@ public class SongsOfPower implements ModInitializer {
         SopPowers.init();
         ServerPlayNetworking.registerGlobalReceiver(Static.KEYBINDING_SYNC, (server, player, handler, buf, responseSender) -> {
             PowerType type = buf.readEnumConstant(PowerType.class);
-            if (!player.isSpectator())
-                server.execute(() -> SongPowerData.byPlayer(player).get(type).keyPress());
+            SongPowerData data = SongPowerData.byPlayer(player);
+            if (!player.isSpectator() && data.isEnabled())
+                server.execute(() -> data.get(type).keyPress());
         });
     }
 }
