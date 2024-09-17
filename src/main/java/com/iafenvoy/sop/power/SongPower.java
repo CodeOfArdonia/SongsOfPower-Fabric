@@ -124,12 +124,12 @@ public final class SongPower {
 
     public void playApplySound(PlayerEntity player, World world) {
         if (this.applySound != null)
-            SoundUtil.playSound(world, player.getX(), player.getY(), player.getZ(), this.applySound.getId(), 5, 1);
+            SoundUtil.playSound(world, player.getX(), player.getY(), player.getZ(), this.applySound.getId(), 0.5f, 1);
     }
 
     public void playUnapplySound(PlayerEntity player, World world) {
         if (this.unapplySound != null)
-            SoundUtil.playSound(world, player.getX(), player.getY(), player.getZ(), this.unapplySound.getId(), 5, 1);
+            SoundUtil.playSound(world, player.getX(), player.getY(), player.getZ(), this.unapplySound.getId(), 0.5f, 1);
     }
 
     public SongPower setApplyDelay(int delay) {

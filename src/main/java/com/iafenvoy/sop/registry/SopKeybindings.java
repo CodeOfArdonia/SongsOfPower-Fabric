@@ -21,7 +21,6 @@ import java.util.stream.Stream;
 @Environment(EnvType.CLIENT)
 public final class SopKeybindings {
     public static final String CATEGORY = "key.category." + SongsOfPower.MOD_ID;
-    public static final KeyBinding SELECT_POWER = new KeyBinding("key." + SongsOfPower.MOD_ID + ".select_power", GLFW.GLFW_KEY_G, CATEGORY);
     public static final KeyBinding AGGRESSIUM_POWER = new KeyBinding("key." + SongsOfPower.MOD_ID + ".aggressium_power", GLFW.GLFW_KEY_C, CATEGORY);
     public static final KeyBinding MOBILIUM_POWER = new KeyBinding("key." + SongsOfPower.MOD_ID + ".mobilium_power", GLFW.GLFW_KEY_V, CATEGORY);
     public static final KeyBinding PROTISIUM_POWER = new KeyBinding("key." + SongsOfPower.MOD_ID + ".protisium_power", GLFW.GLFW_KEY_B, CATEGORY);
@@ -30,7 +29,6 @@ public final class SopKeybindings {
 
     public static void init() {
         KeyBindingRegistryImpl.addCategory(CATEGORY);
-        KeyBindingRegistryImpl.registerKeyBinding(SELECT_POWER);
         KeyBindingRegistryImpl.registerKeyBinding(AGGRESSIUM_POWER);
         KeyBindingRegistryImpl.registerKeyBinding(MOBILIUM_POWER);
         KeyBindingRegistryImpl.registerKeyBinding(PROTISIUM_POWER);

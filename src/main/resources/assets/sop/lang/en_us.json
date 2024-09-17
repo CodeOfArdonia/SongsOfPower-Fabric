@@ -11,5 +11,10 @@
   "power.sop.aggrosphere": "Aggrosphere",
   "power.sop.mobiliflash": "Mobiliflash",
   "power.sop.mobiliwings": "Mobiliwings",
-  "power.sop.protesphere": "Protesphere"
+  "power.sop.protesphere": "Protesphere",
+  "key.category.sop": "Songs of Power",
+  "key.sop.aggressium_power": "Use Aggressium Power",
+  "key.sop.mobilium_power": "Use Mobilium Power",
+  "key.sop.protisium_power": "Use Protisium Power",
+  "key.sop.supportium_power": "Use Supportium Power"
 }

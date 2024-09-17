@@ -40,7 +40,7 @@ public class SopPowers {
     public static final SongPower MOBILIWINGS = new SongPower("mobiliwings", PowerType.MOBILIUM, new ItemStack(Items.ELYTRA), 1, true)
             .setApplySound(SoundEvents.ITEM_ARMOR_EQUIP_ELYTRA)
             .onApply((player, world) -> player.startFallFlying()).onTick((data, player, world) -> {
-                if (player.isOnGround() || !player.isFallFlying()) data.disable();
+                if (player.isOnGround() || player.getAbilities().flying) data.disable();
             });
     //Protisium
     public static final SongPower PROTESPHERE = new SongPower("protesphere", PowerType.PROTISIUM, new ItemStack(Items.SHIELD), 1, true)
