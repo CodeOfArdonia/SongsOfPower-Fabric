@@ -15,16 +15,16 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.DoubleSupplier;
 
-public final class SongPower {
+public class SongPower {
     public static final List<SongPower> POWERS = new ArrayList<>();
-    public static final SongPower EMPTY = new SongPower("", null, ItemStack.EMPTY, 0, false);
+    public static final SongPower EMPTY = SongPower.instant("", null, ItemStack.EMPTY, 0);
     private final String id;
-    private final PowerType category;
+    private final PowerCategory category;
     private final ItemStack icon;
-    private final DoubleSupplier mana;
-    private final boolean persist;
+    private final PowerType persist;
+    private final ManaSupplier mana;
+    private CooldownSupplier cooldown = data -> 0;
     private Consumer2<PlayerEntity, World> apply = (player, world) -> {
     }, unapply = (player, world) -> {
     };
@@ -36,11 +36,7 @@ public final class SongPower {
     @Nullable
     private SoundEvent unapplySound;
 
-    public SongPower(String id, PowerType category, ItemStack icon, final double mana, boolean persist) {
-        this(id, category, icon, () -> mana, persist);
-    }
-
-    public SongPower(String id, PowerType category, ItemStack icon, DoubleSupplier mana, boolean persist) {
+    protected SongPower(String id, PowerCategory category, ItemStack icon, ManaSupplier mana, PowerType persist) {
         this.id = id;
         this.category = category;
         this.icon = icon;
@@ -50,6 +46,22 @@ public final class SongPower {
             POWERS.add(this);
             category.registerPower(this);
         }
+    }
+
+    public static SongPower persist(String id, PowerCategory category, ItemStack icon, double mana) {
+        return persist(id, category, icon, data -> mana);
+    }
+
+    public static SongPower persist(String id, PowerCategory category, ItemStack icon, ManaSupplier mana) {
+        return new SongPower(id, category, icon, mana, PowerType.PERSIST);
+    }
+
+    public static SongPower instant(String id, PowerCategory category, ItemStack icon, double mana) {
+        return instant(id, category, icon, data -> mana);
+    }
+
+    public static SongPower instant(String id, PowerCategory category, ItemStack icon, ManaSupplier mana) {
+        return new SongPower(id, category, icon, mana, PowerType.INSTANT);
     }
 
     public ItemStack getStack() {
@@ -81,7 +93,7 @@ public final class SongPower {
         return this.id;
     }
 
-    public PowerType getCategory() {
+    public PowerCategory getCategory() {
         return this.category;
     }
 
@@ -89,12 +101,26 @@ public final class SongPower {
         return this.icon;
     }
 
-    public double getMana() {
-        return this.mana.getAsDouble();
+    public double getMana(SongPowerData.SinglePowerData data) {
+        return this.mana.getMana(data);
     }
 
     public boolean isPersist() {
-        return this.persist;
+        return this.persist == PowerType.PERSIST;
+    }
+
+    public SongPower setCooldown(int cooldown) {
+        return this.setCooldown(data -> cooldown);
+    }
+
+    public SongPower setCooldown(CooldownSupplier cooldown) {
+        if (this.isPersist()) throw new IllegalStateException("Cooldown only available for not persist power!");
+        this.cooldown = cooldown;
+        return this;
+    }
+
+    public int getCooldown(SongPowerData.SinglePowerData data) {
+        return this.cooldown.getCooldown(data);
     }
 
     public void apply(PlayerEntity player, World world) {
@@ -133,7 +159,7 @@ public final class SongPower {
     }
 
     public SongPower setApplyDelay(int delay) {
-        if (this.persist) throw new IllegalStateException("Delay only available for not persist power");
+        if (this.isPersist()) throw new IllegalStateException("Delay only available for not persist power!");
         this.applyDelayTick = delay;
         return this;
     }
@@ -144,5 +170,15 @@ public final class SongPower {
 
     public String getTranslateKey() {
         return "power." + SongsOfPower.MOD_ID + "." + this.id;
+    }
+
+    @FunctionalInterface
+    public interface ManaSupplier {
+        double getMana(SongPowerData.SinglePowerData data);
+    }
+
+    @FunctionalInterface
+    public interface CooldownSupplier {
+        int getCooldown(SongPowerData.SinglePowerData data);
     }
 }

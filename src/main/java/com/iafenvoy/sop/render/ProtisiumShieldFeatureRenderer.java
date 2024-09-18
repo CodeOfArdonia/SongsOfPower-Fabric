@@ -1,6 +1,6 @@
 package com.iafenvoy.sop.render;
 
-import com.iafenvoy.sop.power.PowerType;
+import com.iafenvoy.sop.power.PowerCategory;
 import com.iafenvoy.sop.power.SongPowerData;
 import com.iafenvoy.sop.registry.SopPowers;
 import net.fabricmc.api.EnvType;
@@ -26,7 +26,7 @@ public class ProtisiumShieldFeatureRenderer<T extends PlayerEntity, M extends Pl
 
     @Override
     public void render(MatrixStack matrices, VertexConsumerProvider vertexConsumers, int light, T entity, float limbAngle, float limbDistance, float tickDelta, float animationProgress, float headYaw, float headPitch) {
-        if (SongPowerData.byPlayer(entity).powerEnabled(PowerType.PROTISIUM, SopPowers.PROTESPHERE)) {
+        if (SongPowerData.byPlayer(entity).powerEnabled(PowerCategory.PROTISIUM, SopPowers.PROTESPHERE)) {
             matrices.push();
             matrices.scale(2.5f, 2.5f, 2.5f);
             matrices.translate(0, -0.8, 0);

@@ -1,7 +1,7 @@
 package com.iafenvoy.sop.screen;
 
 import com.iafenvoy.sop.SongsOfPower;
-import com.iafenvoy.sop.power.PowerType;
+import com.iafenvoy.sop.power.PowerCategory;
 import com.iafenvoy.sop.power.SongPowerData;
 import com.iafenvoy.sop.registry.SopKeybindings;
 import net.fabricmc.api.EnvType;
@@ -22,7 +22,7 @@ public class PowerHudRenderer {
         if (client.player.isSpectator()) return;
         SongPowerData data = SongPowerData.byPlayer(client.player);
         if (!data.isEnabled()) return;
-        for (PowerType type : PowerType.values())
+        for (PowerCategory type : PowerCategory.values())
             renderOne(context, data.get(type));
     }
 

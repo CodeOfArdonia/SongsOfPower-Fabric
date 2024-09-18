@@ -1,8 +1,7 @@
 package com.iafenvoy.sop.item;
 
-import com.iafenvoy.sop.power.PowerType;
+import com.iafenvoy.sop.power.PowerCategory;
 import com.iafenvoy.sop.power.SongPower;
-import com.iafenvoy.sop.registry.SopItemGroups;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -16,11 +15,11 @@ import java.util.List;
 import java.util.Map;
 
 public class SongCubeItem extends Item {
-    public static final Map<PowerType, Item> SONGS = new HashMap<>();
+    public static final Map<PowerCategory, Item> SONGS = new HashMap<>();
     public static final String POWER_TYPE_KEY = "power_type";
-    private final PowerType type;
+    private final PowerCategory type;
 
-    public SongCubeItem(PowerType type) {
+    public SongCubeItem(PowerCategory type) {
         super(new Settings().rarity(Rarity.EPIC).maxCount(1));
         SONGS.put(type, this);
         this.type = type;
@@ -36,7 +35,7 @@ public class SongCubeItem extends Item {
         return this.type.getPowerById(stack.getOrCreateNbt().getString(POWER_TYPE_KEY));
     }
 
-    public PowerType getType() {
+    public PowerCategory getType() {
         return this.type;
     }
 }

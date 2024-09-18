@@ -3,7 +3,7 @@ package com.iafenvoy.sop.registry;
 import com.iafenvoy.neptune.network.PacketBufferUtils;
 import com.iafenvoy.sop.SongsOfPower;
 import com.iafenvoy.sop.Static;
-import com.iafenvoy.sop.power.PowerType;
+import com.iafenvoy.sop.power.PowerCategory;
 import it.unimi.dsi.fastutil.booleans.BooleanConsumer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -34,7 +34,7 @@ public final class SopKeybindings {
         KeyBindingRegistryImpl.registerKeyBinding(PROTISIUM_POWER);
         KeyBindingRegistryImpl.registerKeyBinding(SUPPORTIUM_POWER);
         ClientTickEvents.END_CLIENT_TICK.register(client -> KEY_BINDINGS.forEach(KeyBindingHolder::tick));
-        for (PowerType type : PowerType.values())
+        for (PowerCategory type : PowerCategory.values())
             KEY_BINDINGS.get(type.ordinal()).registerPressCallback(press -> {
                 if (press) {
                     PacketByteBuf buf = PacketBufferUtils.create();

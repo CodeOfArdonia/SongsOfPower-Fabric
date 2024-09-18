@@ -1,6 +1,6 @@
 package com.iafenvoy.sop;
 
-import com.iafenvoy.sop.power.PowerType;
+import com.iafenvoy.sop.power.PowerCategory;
 import com.iafenvoy.sop.power.SongPowerData;
 import com.iafenvoy.sop.registry.*;
 import net.fabricmc.api.ModInitializer;
@@ -18,7 +18,7 @@ public class SongsOfPower implements ModInitializer {
         SopSounds.init();
         SopPowers.init();
         ServerPlayNetworking.registerGlobalReceiver(Static.KEYBINDING_SYNC, (server, player, handler, buf, responseSender) -> {
-            PowerType type = buf.readEnumConstant(PowerType.class);
+            PowerCategory type = buf.readEnumConstant(PowerCategory.class);
             SongPowerData data = SongPowerData.byPlayer(player);
             if (!player.isSpectator() && data.isEnabled())
                 server.execute(() -> data.get(type).keyPress());

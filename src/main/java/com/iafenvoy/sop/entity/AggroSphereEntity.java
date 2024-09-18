@@ -11,6 +11,7 @@ import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 
@@ -25,16 +26,17 @@ public class AggroSphereEntity extends PersistentProjectileEntity {
         if (this.getY() > 1000 || this.age > 20 * 60)
             this.remove(RemovalReason.DISCARDED);
         if (this.isOnGround() || this.inGround || !this.getEntityWorld().getBlockState(this.getBlockPos()).isAir()) {
-            this.getEntityWorld().createExplosion(this, DamageUtil.build(this, DamageTypes.MAGIC), new FakeExplosionBehavior(), this.getPos(), 2, false, World.ExplosionSourceType.NONE);
+            this.getEntityWorld().createExplosion(this, DamageUtil.build(this, DamageTypes.MOB_ATTACK), new FakeExplosionBehavior(), this.getPos(), 2, false, World.ExplosionSourceType.NONE);
             this.remove(RemovalReason.DISCARDED);
         }
         LivingEntity target = this.getEntityWorld().getClosestEntity(LivingEntity.class, TargetPredicate.DEFAULT, null, this.getX(), this.getY(), this.getZ(), new Box(this.getPos().add(1, 1, 1), this.getPos().subtract(1, 1, 1)));
         if (target != null) {
-            if (target.getMainHandStack().isOf(Items.SHIELD))
-                target.getMainHandStack().damage(5, target.getRandom(), null);
-            else if (target.getOffHandStack().isOf(Items.SHIELD))
-                target.getOffHandStack().damage(5, target.getRandom(), null);
-            else target.damage(DamageUtil.build(target, DamageTypes.MAGIC), 5);
+            ServerPlayerEntity attacker = this.getOwner() instanceof ServerPlayerEntity player ? player : null;
+            if (target.getMainHandStack().isOf(Items.SHIELD) && target.isUsingItem())
+                target.getMainHandStack().damage(5, target.getRandom(), attacker);
+            else if (target.getOffHandStack().isOf(Items.SHIELD) && target.isUsingItem())
+                target.getOffHandStack().damage(5, target.getRandom(), attacker);
+            else target.damage(DamageUtil.build(target, DamageTypes.MOB_ATTACK), 5);
             this.remove(RemovalReason.DISCARDED);
         }
         for (int i = 0; i < 9; i++)

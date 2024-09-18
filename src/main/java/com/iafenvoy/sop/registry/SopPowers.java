@@ -1,7 +1,7 @@
 package com.iafenvoy.sop.registry;
 
 import com.iafenvoy.sop.entity.AggroSphereEntity;
-import com.iafenvoy.sop.power.PowerType;
+import com.iafenvoy.sop.power.PowerCategory;
 import com.iafenvoy.sop.power.SongPower;
 import com.iafenvoy.sop.util.SopMath;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -15,8 +15,8 @@ import net.minecraft.util.math.Vec3d;
 @SuppressWarnings("unused")
 public class SopPowers {
     //Aggressium
-    public static final SongPower AGGROSPHERE = new SongPower("aggrosphere", PowerType.AGGRESSIUM, new ItemStack(Items.FIRE_CHARGE), 10, false)
-            .setApplySound(SopSounds.AGGROSPHERE).setApplyDelay(6)
+    public static final SongPower AGGROSPHERE = SongPower.instant("aggrosphere", PowerCategory.AGGRESSIUM, new ItemStack(Items.FIRE_CHARGE), 10)
+            .setApplySound(SopSounds.AGGROSPHERE).setApplyDelay(6).setCooldown(10)
             .onApply((player, world) -> {
                 AggroSphereEntity aggroSphere = SopEntities.AGGRO_SPHERE.create(world);
                 if (aggroSphere != null) {
@@ -29,21 +29,21 @@ public class SopPowers {
                 }
             });
     //Mobilium
-    public static final SongPower MOBILIFLASH = new SongPower("mobiliflash", PowerType.MOBILIUM, new ItemStack(Items.ENDER_PEARL), 30, false)
-            .setApplySound(SopSounds.MOBILIFLASH).setApplyDelay(20)
+    public static final SongPower MOBILIFLASH = SongPower.instant("mobiliflash", PowerCategory.MOBILIUM, new ItemStack(Items.ENDER_PEARL), 30)
+            .setApplySound(SopSounds.MOBILIFLASH).setApplyDelay(20).setCooldown(40)
             .onApply((player, world) -> {
                 final int speed = 10;
                 final Vec3d dir = SopMath.getRotationVectorUnit(MathHelper.clamp(player.getPitch(), -15, 15), player.getHeadYaw());
                 player.setVelocity(dir.multiply(speed));
                 player.velocityModified = true;
             });
-    public static final SongPower MOBILIWINGS = new SongPower("mobiliwings", PowerType.MOBILIUM, new ItemStack(Items.ELYTRA), 1, true)
+    public static final SongPower MOBILIWINGS = SongPower.persist("mobiliwings", PowerCategory.MOBILIUM, new ItemStack(Items.ELYTRA), 1)
             .setApplySound(SoundEvents.ITEM_ARMOR_EQUIP_ELYTRA)
             .onApply((player, world) -> player.startFallFlying()).onTick((data, player, world) -> {
                 if (player.isOnGround() || player.getAbilities().flying) data.disable();
             });
     //Protisium
-    public static final SongPower PROTESPHERE = new SongPower("protesphere", PowerType.PROTISIUM, new ItemStack(Items.SHIELD), 1, true)
+    public static final SongPower PROTESPHERE = SongPower.persist("protesphere", PowerCategory.PROTISIUM, new ItemStack(Items.SHIELD), 1)
             .setApplySound(SopSounds.PROTESPHERE).setUnapplySound(SopSounds.PROTESPHERE_UNAPPLY)
             .onTick((data, player, world) -> player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 20, 3)));
 

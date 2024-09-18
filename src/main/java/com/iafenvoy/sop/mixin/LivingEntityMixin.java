@@ -1,6 +1,6 @@
 package com.iafenvoy.sop.mixin;
 
-import com.iafenvoy.sop.power.PowerType;
+import com.iafenvoy.sop.power.PowerCategory;
 import com.iafenvoy.sop.power.SongPowerData;
 import com.iafenvoy.sop.registry.SopPowers;
 import net.minecraft.entity.Entity;
@@ -24,7 +24,7 @@ public abstract class LivingEntityMixin extends Entity {
     private void handleFallFlyingCheck(CallbackInfo ci) {
         LivingEntity entity = (LivingEntity) (Object) this;
         if (!entity.getWorld().isClient && entity instanceof PlayerEntity player && !player.isOnGround() && !player.hasVehicle() && !player.hasStatusEffect(StatusEffects.LEVITATION))
-            if (SongPowerData.byPlayer(player).powerEnabled(PowerType.MOBILIUM, SopPowers.MOBILIWINGS)) {
+            if (SongPowerData.byPlayer(player).powerEnabled(PowerCategory.MOBILIUM, SopPowers.MOBILIWINGS)) {
                 this.setFlag(7, true);
                 ci.cancel();
             }
