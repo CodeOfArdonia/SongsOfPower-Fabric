@@ -6,7 +6,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.util.Identifier;
 
-public class SopSounds {
+public final class SopSounds {
     public static final SoundEvent AGGROSPHERE = register("aggrosphere");
     public static final SoundEvent MOBILIFLASH = register("mobiliflash");
     public static final SoundEvent PROTESPHERE = register("protesphere");

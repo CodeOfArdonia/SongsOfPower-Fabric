@@ -7,6 +7,7 @@ import com.iafenvoy.sop.registry.SopKeybindings;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.font.TextRenderer;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -16,6 +17,7 @@ import net.minecraft.util.Identifier;
 public class PowerHudRenderer {
     private static final Identifier WIDGETS_TEXTURE = new Identifier("textures/gui/widgets.png");
     private static final Identifier BARS_TEXTURE = new Identifier(SongsOfPower.MOD_ID, "textures/gui/bars.png");
+    private static final TextRenderer textRenderer = MinecraftClient.getInstance().textRenderer;
 
     public static void render(MinecraftClient client, DrawContext context, float tickDelta) {
         assert client.player != null;
@@ -37,6 +39,9 @@ public class PowerHudRenderer {
         int newHeight = (int) (maxHeight * data.getRemainMana() / data.getMaxMana());
         int reduceHeight = maxHeight - newHeight;
         context.drawTexture(BARS_TEXTURE, x - 7, y - 38 + reduceHeight, 19 + 13 * data.getType().getColorOffset(), 0, 7, newHeight);
+        //Render Cooldown
+        String text = data.ready() ? "§aR" : String.format("§c%.1fs", 1.0 * data.getCooldown() / 20);
+        context.drawTextWithShadow(textRenderer, text, x + 2, y - 10, 0xFFFFFFFF);
         //Render Power Icon/Slot
         context.drawTexture(WIDGETS_TEXTURE, x, y, 60, 23, 22, 22);
         if (binding.isPressed() || data.isEnabled()) context.drawTexture(WIDGETS_TEXTURE, x, y, 1, 23, 23, 23);

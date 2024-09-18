@@ -1,7 +1,7 @@
 package com.iafenvoy.sop.item;
 
+import com.iafenvoy.sop.power.AbstractSongPower;
 import com.iafenvoy.sop.power.PowerCategory;
-import com.iafenvoy.sop.power.SongPower;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -31,7 +31,7 @@ public class SongCubeItem extends Item {
         tooltip.add(Text.translatable(this.getPower(stack).getTranslateKey()).formatted(this.type.getColor()));
     }
 
-    public SongPower getPower(ItemStack stack) {
+    public AbstractSongPower<?> getPower(ItemStack stack) {
         return this.type.getPowerById(stack.getOrCreateNbt().getString(POWER_TYPE_KEY));
     }
 

@@ -86,7 +86,7 @@ public class SongPowerData implements Serializable, Tickable {
         return this.supportium;
     }
 
-    public boolean powerEnabled(PowerCategory type, SongPower power) {
+    public boolean powerEnabled(PowerCategory type, AbstractSongPower<?> power) {
         SinglePowerData data = this.get(type);
         return data.hasPower() && data.isEnabled() && data.getActivePower() == power;
     }
@@ -98,7 +98,7 @@ public class SongPowerData implements Serializable, Tickable {
     public static class SinglePowerData implements Serializable, Tickable {
         private final SongPowerData parent;
         private final PowerCategory type;
-        private SongPower activePower = SongPower.EMPTY;
+        private AbstractSongPower<?> activePower = DummySongPower.EMPTY;
         private boolean enabled = false;
         private double maxMana = 100;
         private double remainMana = 100;
@@ -137,11 +137,9 @@ public class SongPowerData implements Serializable, Tickable {
         @Override
         public void tick() {
             this.recoverMana = 0.5;
-            if (this.cooldown > 0) this.cooldown--;
-            if (this.isEnabled() && !this.parent.player.getEntityWorld().isClient) {
-                this.activePower.tick(this, this.parent.player, this.parent.player.getEntityWorld());
-                this.remainMana -= this.activePower.getMana(this);
-            }
+            if (!this.ready()) this.cooldown--;
+            if (this.isEnabled() && !this.parent.player.getEntityWorld().isClient && this.activePower instanceof PersistSongPower persistSongPower)
+                if (persistSongPower.tick(this)) this.disable();
             this.remainMana += this.recoverMana;
             if (this.remainMana > this.maxMana) this.remainMana = this.maxMana;
             if (this.remainMana < 0) {
@@ -157,15 +155,11 @@ public class SongPowerData implements Serializable, Tickable {
             }
             if (this.isEnabled()) {
                 if (this.activePower.isPersist()) this.disable();
-                else this.activePower.unapply(this.parent.player, this.parent.player.getEntityWorld());
+                else this.activePower.unapply(this);
             } else {
                 if (this.activePower.isPersist()) this.enable();
                 else {
-                    if (this.cooldown <= 0) {
-                        this.cooldown = this.activePower.getCooldown(this);
-                        this.remainMana -= this.activePower.getMana(this);
-                        this.activePower.apply(this.parent.player, this.parent.player.getEntityWorld());
-                    }
+                    if (this.ready()) this.activePower.apply(this);
                 }
             }
         }
@@ -180,9 +174,9 @@ public class SongPowerData implements Serializable, Tickable {
 
         public void setEnabled(boolean enabled) {
             if (!this.enabled && enabled)
-                this.activePower.apply(this.parent.player, this.parent.player.getEntityWorld());
+                this.activePower.apply(this);
             if (this.enabled && !enabled)
-                this.activePower.unapply(this.parent.player, this.parent.player.getEntityWorld());
+                this.activePower.unapply(this);
             this.enabled = enabled;
         }
 
@@ -194,11 +188,11 @@ public class SongPowerData implements Serializable, Tickable {
             this.setEnabled(false);
         }
 
-        public SongPower getActivePower() {
+        public AbstractSongPower<?> getActivePower() {
             return this.activePower;
         }
 
-        private void setActivePower(SongPower activePower) {
+        private void setActivePower(AbstractSongPower<?> activePower) {
             if (!this.activePower.isEmpty() && this.activePower != activePower)
                 this.disable();
             this.activePower = activePower;
@@ -211,7 +205,7 @@ public class SongPowerData implements Serializable, Tickable {
         public ItemStack pickHoldItem() {
             ItemStack holdItem = this.holdItem;
             this.holdItem = ItemStack.EMPTY;
-            this.setActivePower(SongPower.EMPTY);
+            this.setActivePower(DummySongPower.EMPTY);
             return holdItem;
         }
 
@@ -221,7 +215,7 @@ public class SongPowerData implements Serializable, Tickable {
                 this.setActivePower(songCube.getPower(holdItem));
             } else if (holdItem.isEmpty()) {
                 this.holdItem = ItemStack.EMPTY;
-                this.setActivePower(SongPower.EMPTY);
+                this.setActivePower(DummySongPower.EMPTY);
             } else
                 throw new IllegalArgumentException("holdItem should be a song cube.");
         }
@@ -244,6 +238,18 @@ public class SongPowerData implements Serializable, Tickable {
 
         public int getCooldown() {
             return this.cooldown;
+        }
+
+        public void reduceMana(double amount) {
+            this.remainMana -= amount;
+        }
+
+        public boolean ready() {
+            return this.cooldown <= 0;
+        }
+
+        public void cooldown() {
+            this.cooldown = this.activePower.getCooldown(this);
         }
     }
 }

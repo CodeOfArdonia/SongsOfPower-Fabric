@@ -16,13 +16,13 @@ This mod add song abilities from Songs of War Animation.
 
 **HotKey: C**
 
-- Aggrosphere: Fire a sphere and damage hit entity or create explosion
+- Aggrosphere: Fire a sphere and damage hit entity or create explosion. (Cooldown: 10ticks / 0.5s)
 
 ### Mobilium
 
 **HotKey: V**
 
-- Mobiliflash: Teleport to the direction you see, has a delay of 10 ticks.
+- Mobiliflash: Teleport to the direction you see, has a delay of 10 ticks. (Cooldown: 40ticks / 2s)
 - Mobiliwings: Enable a fake elytra and into sliding mode.
 
 ### Protisium

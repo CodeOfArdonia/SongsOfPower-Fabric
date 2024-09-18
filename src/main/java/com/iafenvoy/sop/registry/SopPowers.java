@@ -1,23 +1,30 @@
 package com.iafenvoy.sop.registry;
 
+import com.iafenvoy.neptune.event.LivingEntityEvents;
 import com.iafenvoy.sop.entity.AggroSphereEntity;
-import com.iafenvoy.sop.power.PowerCategory;
-import com.iafenvoy.sop.power.SongPower;
+import com.iafenvoy.sop.power.*;
 import com.iafenvoy.sop.util.SopMath;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.entity.effect.StatusEffects;
+import com.iafenvoy.sop.util.WorldUtil;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 
 @SuppressWarnings("unused")
-public class SopPowers {
+public final class SopPowers {
     //Aggressium
-    public static final SongPower AGGROSPHERE = SongPower.instant("aggrosphere", PowerCategory.AGGRESSIUM, new ItemStack(Items.FIRE_CHARGE), 10)
-            .setApplySound(SopSounds.AGGROSPHERE).setApplyDelay(6).setCooldown(10)
-            .onApply((player, world) -> {
+    public static final DelaySongPower AGGROSPHERE = new DelaySongPower("aggrosphere", PowerCategory.AGGRESSIUM, new ItemStack(Items.FIRE_CHARGE), 10)
+            .setApplySound(SopSounds.AGGROSPHERE)
+            .setDelay(6)
+            .setCooldown(10)
+            .onApply(holder -> {
+                World world = holder.getWorld();
+                PlayerEntity player = holder.getPlayer();
                 AggroSphereEntity aggroSphere = SopEntities.AGGRO_SPHERE.create(world);
                 if (aggroSphere != null) {
                     final int speed = 3;
@@ -29,24 +36,47 @@ public class SopPowers {
                 }
             });
     //Mobilium
-    public static final SongPower MOBILIFLASH = SongPower.instant("mobiliflash", PowerCategory.MOBILIUM, new ItemStack(Items.ENDER_PEARL), 30)
-            .setApplySound(SopSounds.MOBILIFLASH).setApplyDelay(20).setCooldown(40)
-            .onApply((player, world) -> {
-                final int speed = 10;
+    public static final DelaySongPower MOBILIFLASH = new DelaySongPower("mobiliflash", PowerCategory.MOBILIUM, new ItemStack(Items.ENDER_PEARL), 30)
+            .setApplySound(SopSounds.MOBILIFLASH)
+            .setDelay(20)
+            .setCooldown(40)
+            .onApply(holder -> {
+                World world = holder.getWorld();
+                PlayerEntity player = holder.getPlayer();
+                final int speed = 8;
                 final Vec3d dir = SopMath.getRotationVectorUnit(MathHelper.clamp(player.getPitch(), -15, 15), player.getHeadYaw());
                 player.setVelocity(dir.multiply(speed));
                 player.velocityModified = true;
             });
-    public static final SongPower MOBILIWINGS = SongPower.persist("mobiliwings", PowerCategory.MOBILIUM, new ItemStack(Items.ELYTRA), 1)
+    public static final PersistSongPower MOBILIWINGS = new PersistSongPower("mobiliwings", PowerCategory.MOBILIUM, new ItemStack(Items.ELYTRA), 1)
             .setApplySound(SoundEvents.ITEM_ARMOR_EQUIP_ELYTRA)
-            .onApply((player, world) -> player.startFallFlying()).onTick((data, player, world) -> {
-                if (player.isOnGround() || player.getAbilities().flying) data.disable();
+            .onApply(holder -> holder.getPlayer().startFallFlying())
+            .onTick(holder -> {
+                PlayerEntity player = holder.getPlayer();
+                if (player.isOnGround() || player.getAbilities().flying) holder.cancel();
             });
     //Protisium
-    public static final SongPower PROTESPHERE = SongPower.persist("protesphere", PowerCategory.PROTISIUM, new ItemStack(Items.SHIELD), 1)
-            .setApplySound(SopSounds.PROTESPHERE).setUnapplySound(SopSounds.PROTESPHERE_UNAPPLY)
-            .onTick((data, player, world) -> player.addStatusEffect(new StatusEffectInstance(StatusEffects.RESISTANCE, 20, 3)));
+    public static final PersistSongPower PROTESPHERE = new PersistSongPower("protesphere", PowerCategory.PROTISIUM, new ItemStack(Items.SHIELD), 1)
+            .setApplySound(SopSounds.PROTESPHERE)
+            .setUnapplySound(SopSounds.PROTESPHERE_UNAPPLY);//Protect will be handled by event.
+    //Supportium
+    public static final InstantSongPower SUPPOROLIFT = new InstantSongPower("supporolift", PowerCategory.SUPPORTIUM, new ItemStack(Items.STRING), 50)
+            .setCooldown(200)
+            .onApply(holder -> {
+                PlayerEntity player = holder.getPlayer();
+                EntityHitResult result = WorldUtil.raycastEntity(player, 15);
+                if (result != null && result.getEntity() instanceof LivingEntity living) {
+                    Vec3d dir = player.getPos().subtract(living.getPos()).multiply(0.2);
+                    living.setVelocity(dir);
+                    living.velocityModified = true;
+                } else holder.cancel();
+            });
 
     public static void init() {
+        LivingEntityEvents.DAMAGE.register((livingEntity, damageSource, v) -> {
+            if (livingEntity instanceof PlayerEntity target && SongPowerData.byPlayer(target).powerEnabled(PowerCategory.PROTISIUM, PROTESPHERE))
+                v /= 5;
+            return v;
+        });
     }
 }

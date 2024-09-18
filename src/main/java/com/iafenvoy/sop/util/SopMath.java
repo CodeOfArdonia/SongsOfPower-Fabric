@@ -15,7 +15,14 @@ public class SopMath {
     }
 
     public static Vec3d getRotationVectorUnit(float pitch, float yaw) {
-        Vec3d vec = getRotationVector(pitch, yaw);
-        return vec.multiply(1 / vec.length());
+        return toUnit(getRotationVector(pitch, yaw));
+    }
+
+    public static Vec3d toUnit(double x, double y, double z) {
+        return toUnit(new Vec3d(x, y, z));
+    }
+
+    public static Vec3d toUnit(Vec3d origin) {
+        return origin.multiply(1 / origin.length());
     }
 }

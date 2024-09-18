@@ -1,7 +1,7 @@
 package com.iafenvoy.sop.registry;
 
 import com.iafenvoy.sop.SongsOfPower;
-import com.iafenvoy.sop.power.SongPower;
+import com.iafenvoy.sop.power.AbstractSongPower;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -10,7 +10,7 @@ import net.minecraft.registry.Registry;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
-public class SopItemGroups {
+public final class SopItemGroups {
     public static final ItemGroup MAIN = register("main", FabricItemGroup.builder()
             .displayName(Text.translatable("itemGroup." + SongsOfPower.MOD_ID + ".main"))
             .icon(() -> new ItemStack(SopItems.AGGRESSIUM_SONG))
@@ -19,7 +19,7 @@ public class SopItemGroups {
                 entries.add(SopItems.MOBILIUM_SONG);
                 entries.add(SopItems.PROTISIUM_SONG);
                 entries.add(SopItems.SUPPORTIUM_SONG);
-                for (SongPower power : SongPower.POWERS)
+                for (AbstractSongPower<?> power : AbstractSongPower.POWERS)
                     entries.add(power.getStack());
             }).build());
 

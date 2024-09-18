@@ -17,7 +17,7 @@ import net.minecraft.util.Hand;
 
 import java.util.Collection;
 
-public class SopCommands {
+public final class SopCommands {
     public static void init() {
         CommandRegistrationCallback.EVENT.register((dispatcher, registry, selection) -> dispatcher
                 .register(CommandManager.literal("songpower")

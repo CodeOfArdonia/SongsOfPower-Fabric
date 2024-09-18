@@ -15,8 +15,8 @@ public enum PowerCategory {
     private final String id;
     private final Formatting color;
     private final int colorOffset;
-    private final List<SongPower> powers = new ArrayList<>();
-    private final Map<String, SongPower> byId = new HashMap<>();
+    private final List<AbstractSongPower<?>> powers = new ArrayList<>();
+    private final Map<String, AbstractSongPower<?>> byId = new HashMap<>();
 
     PowerCategory(String id, Formatting color, int colorOffset) {
         this.id = id;
@@ -36,14 +36,14 @@ public enum PowerCategory {
         return this.color;
     }
 
-    public void registerPower(SongPower power) {
+    public void registerPower(AbstractSongPower<?> power) {
         this.powers.add(power);
-        SongPower p = this.byId.put(power.getId(), power);
+        AbstractSongPower<?> p = this.byId.put(power.getId(), power);
         if (p != null)
             throw new IllegalArgumentException("Duplicated id " + p.getId() + " for song power type " + this.id + "!");
     }
 
-    public SongPower getPowerById(String id) {
-        return this.powers.stream().filter(x -> x.getId().equals(id)).findFirst().orElse(SongPower.EMPTY);
+    public AbstractSongPower<?> getPowerById(String id) {
+        return this.powers.stream().filter(x -> x.getId().equals(id)).findFirst().orElse(DummySongPower.EMPTY);
     }
 }

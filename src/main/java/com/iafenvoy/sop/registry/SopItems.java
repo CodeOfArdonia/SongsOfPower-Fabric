@@ -8,7 +8,7 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
-public class SopItems {
+public final class SopItems {
     //Song Cubes
     public static final SongCubeItem AGGRESSIUM_SONG = registerSongCube("aggressium_song", new SongCubeItem(PowerCategory.AGGRESSIUM));
     public static final SongCubeItem MOBILIUM_SONG = registerSongCube("mobilium_song", new SongCubeItem(PowerCategory.MOBILIUM));
