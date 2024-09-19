@@ -1,7 +1,7 @@
 package com.iafenvoy.sop.mixin;
 
-import com.iafenvoy.sop.render.ProtisiumShieldFeatureRenderer;
 import com.iafenvoy.sop.render.MobiliumElytraFeatureRenderer;
+import com.iafenvoy.sop.render.ProtisiumSphereFeatureRenderer;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -24,6 +24,6 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
     @Inject(method = "<init>", at = @At("RETURN"))
     private void addCustomRenderer(EntityRendererFactory.Context ctx, boolean slim, CallbackInfo ci) {
         this.addFeature(new MobiliumElytraFeatureRenderer<>(this, ctx.getModelLoader()));
-        this.addFeature(new ProtisiumShieldFeatureRenderer<>(this));
+        this.addFeature(new ProtisiumSphereFeatureRenderer<>(this));
     }
 }

@@ -15,6 +15,14 @@
       }
     ]
   },
+  "protepoint": {
+    "sounds": [
+      {
+        "name": "sop:protepoint",
+        "stream": false
+      }
+    ]
+  },
   "protesphere": {
     "sounds": [
       {

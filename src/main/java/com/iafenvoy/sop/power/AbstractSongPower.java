@@ -18,11 +18,12 @@ public sealed abstract class AbstractSongPower<T extends AbstractSongPower<T>> p
     private final PowerCategory category;
     private final ItemStack icon;
     private final ManaSupplier manaSupplier;
-    private CooldownSupplier cooldownSupplier;
+    private CooldownSupplier cooldownSupplier = data -> 0;
     protected Consumer<SongPowerDataHolder> apply = holder -> {
     };
     @Nullable
     protected SoundEvent applySound;
+    private boolean experimental = false;
 
     public AbstractSongPower(String id, PowerCategory category, ItemStack icon, ManaSupplier manaSupplier) {
         this.id = id;
@@ -116,6 +117,15 @@ public sealed abstract class AbstractSongPower<T extends AbstractSongPower<T>> p
     protected static void playSound(SongPowerDataHolder holder, @Nullable SoundEvent sound) {
         if (sound != null)
             SoundUtil.playSound(holder.getWorld(), holder.getPlayer().getX(), holder.getPlayer().getY(), holder.getPlayer().getZ(), sound.getId(), 0.5f, 1);
+    }
+
+    public T experimental() {
+        this.experimental = true;
+        return this.get();
+    }
+
+    public boolean isExperimental() {
+        return this.experimental;
     }
 
     @FunctionalInterface

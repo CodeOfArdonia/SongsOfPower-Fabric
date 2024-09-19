@@ -144,7 +144,7 @@ public class SongPowerData implements Serializable, Tickable {
             if (this.remainMana > this.maxMana) this.remainMana = this.maxMana;
             if (this.remainMana < 0) {
                 this.remainMana += this.maxMana;
-                this.parent.player.addExhaustion(4);
+                this.parent.player.addExhaustion(8);
             }
         }
 

@@ -10,6 +10,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.sound.SoundEvents;
+import net.minecraft.util.Hand;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -56,15 +57,26 @@ public final class SopPowers {
                 if (player.isOnGround() || player.getAbilities().flying) holder.cancel();
             });
     //Protisium
-    public static final PersistSongPower PROTESPHERE = new PersistSongPower("protesphere", PowerCategory.PROTISIUM, new ItemStack(Items.SHIELD), 1)
+    public static final PersistSongPower PROTESPHERE = new PersistSongPower("protesphere", PowerCategory.PROTISIUM, new ItemStack(Items.NETHERITE_CHESTPLATE), 2)
             .setApplySound(SopSounds.PROTESPHERE)
             .setUnapplySound(SopSounds.PROTESPHERE_UNAPPLY);//Protect will be handled by event.
+    public static final PersistSongPower PROTEPOINT = new PersistSongPower("protepoint", PowerCategory.PROTISIUM, new ItemStack(Items.SHIELD), 1)
+            .setApplySound(SopSounds.PROTEPOINT).experimental()
+            .onApply(holder -> {
+                ItemStack stack = new ItemStack(SopItems.PROTEPOINT_SHIELD);
+                holder.getPlayer().setStackInHand(Hand.OFF_HAND, stack);
+            }).onTick(holder -> {
+                if (!holder.getPlayer().getOffHandStack().isOf(SopItems.PROTEPOINT_SHIELD)) holder.getData().disable();
+            }).onUnapply(holder -> {
+                if (holder.getPlayer().getOffHandStack().isOf(SopItems.PROTEPOINT_SHIELD))
+                    holder.getPlayer().setStackInHand(Hand.OFF_HAND, ItemStack.EMPTY.copy());
+            });
     //Supportium
     public static final InstantSongPower SUPPOROLIFT = new InstantSongPower("supporolift", PowerCategory.SUPPORTIUM, new ItemStack(Items.STRING), 50)
             .setCooldown(200)
             .onApply(holder -> {
                 PlayerEntity player = holder.getPlayer();
-                EntityHitResult result = WorldUtil.raycastEntity(player, 15);
+                EntityHitResult result = WorldUtil.raycastEntity(player, 20);
                 if (result != null && result.getEntity() instanceof LivingEntity living) {
                     Vec3d dir = player.getPos().subtract(living.getPos()).multiply(0.2);
                     living.setVelocity(dir);

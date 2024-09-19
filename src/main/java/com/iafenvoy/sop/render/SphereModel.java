@@ -1,6 +1,8 @@
 package com.iafenvoy.sop.render;
 
 import com.iafenvoy.sop.SongsOfPower;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.model.*;
 import net.minecraft.client.render.VertexConsumer;
 import net.minecraft.client.render.entity.model.EntityModel;
@@ -8,6 +10,7 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.Identifier;
 
+@Environment(EnvType.CLIENT)
 public class SphereModel<T extends Entity> extends EntityModel<T> {
     public static final Identifier WHITE_TEXTURE = new Identifier(SongsOfPower.MOD_ID, "textures/white.png");
     private final ModelPart gaping_void;

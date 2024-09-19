@@ -16,10 +16,10 @@ import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.entity.player.PlayerEntity;
 
 @Environment(EnvType.CLIENT)
-public class ProtisiumShieldFeatureRenderer<T extends PlayerEntity, M extends PlayerEntityModel<T>> extends FeatureRenderer<T, M> {
+public class ProtisiumSphereFeatureRenderer<T extends PlayerEntity, M extends PlayerEntityModel<T>> extends FeatureRenderer<T, M> {
     private final SphereModel<T> sphereModel;
 
-    public ProtisiumShieldFeatureRenderer(FeatureRendererContext<T, M> context) {
+    public ProtisiumSphereFeatureRenderer(FeatureRendererContext<T, M> context) {
         super(context);
         this.sphereModel = new SphereModel<>(SphereModel.createBodyLayer().createModel());
     }

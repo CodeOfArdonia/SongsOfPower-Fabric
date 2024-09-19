@@ -28,7 +28,10 @@ public class SongCubeItem extends Item {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
-        tooltip.add(Text.translatable(this.getPower(stack).getTranslateKey()).formatted(this.type.getColor()));
+        AbstractSongPower<?> power = this.getPower(stack);
+        tooltip.add(Text.translatable(power.getTranslateKey()).formatted(this.type.getColor()));
+        if (power.isExperimental())
+            tooltip.add(Text.translatable("item.sop.song.experimental"));
     }
 
     public AbstractSongPower<?> getPower(ItemStack stack) {

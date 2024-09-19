@@ -1,6 +1,8 @@
 package com.iafenvoy.sop.render;
 
 import com.iafenvoy.sop.entity.AggroSphereEntity;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.RenderLayer;
 import net.minecraft.client.render.VertexConsumer;
@@ -10,6 +12,7 @@ import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.util.math.MatrixStack;
 import net.minecraft.util.Identifier;
 
+@Environment(EnvType.CLIENT)
 public class AggroSphereRenderer extends EntityRenderer<AggroSphereEntity> {
     private final SphereModel<AggroSphereEntity> sphereModel;
 
