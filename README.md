@@ -24,6 +24,7 @@ This mod add song abilities from Songs of War Animation.
 
 - Mobiliflash: Teleport to the direction you see, has a delay of 10 ticks. (Cooldown: 40ticks / 2s)
 - Mobiliwings: Enable a fake elytra and into sliding mode.
+- Mobiliglide: Slow falling.
 
 ### Protisium
 
@@ -31,6 +32,7 @@ This mod add song abilities from Songs of War Animation.
 
 - Protesphere **(Recommend AttributeFix)**: Enable a protect shield and reduce 80% damage.
 - Protepoint **(Experimental)**: Enable a fake shield.
+- Proteheal: Heal 10 times with 1 health each. (Cooldown: 200ticks / 10s)
 
 ### Supportium
 
