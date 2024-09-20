@@ -7,7 +7,6 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.ai.TargetPredicate;
 import net.minecraft.entity.damage.DamageTypes;
-import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
@@ -15,8 +14,8 @@ import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.math.Box;
 import net.minecraft.world.World;
 
-public class AggroSphereEntity extends PersistentProjectileEntity {
-    public AggroSphereEntity(EntityType<? extends PersistentProjectileEntity> entityType, World world) {
+public class AggroSphereEntity extends SopProjectileEntity {
+    public AggroSphereEntity(EntityType<? extends AggroSphereEntity> entityType, World world) {
         super(entityType, world);
     }
 
@@ -33,14 +32,20 @@ public class AggroSphereEntity extends PersistentProjectileEntity {
         if (target != null) {
             ServerPlayerEntity attacker = this.getOwner() instanceof ServerPlayerEntity player ? player : null;
             if (target.getMainHandStack().isOf(Items.SHIELD) && target.isUsingItem())
-                target.getMainHandStack().damage(5, target.getRandom(), attacker);
+                target.getMainHandStack().damage((int) this.transformDamage(5), target.getRandom(), attacker);
             else if (target.getOffHandStack().isOf(Items.SHIELD) && target.isUsingItem())
-                target.getOffHandStack().damage(5, target.getRandom(), attacker);
-            else target.damage(DamageUtil.build(target, DamageTypes.MOB_ATTACK), 5);
+                target.getOffHandStack().damage((int) this.transformDamage(5), target.getRandom(), attacker);
+            else target.damage(DamageUtil.build(target, DamageTypes.MOB_ATTACK), this.transformDamage(5));
             this.remove(RemovalReason.DISCARDED);
         }
         for (int i = 0; i < 9; i++)
-            this.getEntityWorld().addParticle(ParticleTypes.FLAME, this.getX() + RandomHelper.nextDouble(-0.3, 0.3), this.getY() + RandomHelper.nextDouble(-0.3, 0.3) + 0.25, this.getZ() + RandomHelper.nextDouble(-0.3, 0.3), this.getVelocity().getX(), this.getVelocity().getY(), this.getVelocity().getZ());
+            this.getEntityWorld().addParticle(ParticleTypes.FLAME,
+                    RandomHelper.rangeRand(this.getX(), 0.3),
+                    RandomHelper.rangeRand(this.getY() + 0.25, 0.3),
+                    RandomHelper.rangeRand(this.getZ(), 0.3),
+                    this.getVelocity().getX(),
+                    this.getVelocity().getY(),
+                    this.getVelocity().getZ());
     }
 
     @Override

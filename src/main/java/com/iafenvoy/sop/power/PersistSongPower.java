@@ -1,5 +1,6 @@
 package com.iafenvoy.sop.power;
 
+import it.unimi.dsi.fastutil.objects.Object2DoubleFunction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvent;
 import org.jetbrains.annotations.Nullable;
@@ -17,7 +18,7 @@ public final class PersistSongPower extends AbstractSongPower<PersistSongPower> 
         this(id, category, icon, data -> mana);
     }
 
-    public PersistSongPower(String id, PowerCategory category, ItemStack icon, ManaSupplier manaSupplier) {
+    public PersistSongPower(String id, PowerCategory category, ItemStack icon, Object2DoubleFunction<SongPowerDataHolder> manaSupplier) {
         super(id, category, icon, manaSupplier);
     }
 

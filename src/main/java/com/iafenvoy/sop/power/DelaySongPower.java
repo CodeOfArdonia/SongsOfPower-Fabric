@@ -1,6 +1,7 @@
 package com.iafenvoy.sop.power;
 
 import com.iafenvoy.neptune.util.Timeout;
+import it.unimi.dsi.fastutil.objects.Object2DoubleFunction;
 import net.minecraft.item.ItemStack;
 
 public final class DelaySongPower extends AbstractSongPower<DelaySongPower> {
@@ -10,7 +11,7 @@ public final class DelaySongPower extends AbstractSongPower<DelaySongPower> {
         this(id, category, icon, data -> mana);
     }
 
-    public DelaySongPower(String id, PowerCategory category, ItemStack icon, ManaSupplier manaSupplier) {
+    public DelaySongPower(String id, PowerCategory category, ItemStack icon, Object2DoubleFunction<SongPowerDataHolder> manaSupplier) {
         super(id, category, icon, manaSupplier);
     }
 

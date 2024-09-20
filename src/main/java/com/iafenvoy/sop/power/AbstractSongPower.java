@@ -3,6 +3,8 @@ package com.iafenvoy.sop.power;
 import com.iafenvoy.neptune.object.SoundUtil;
 import com.iafenvoy.sop.SongsOfPower;
 import com.iafenvoy.sop.item.SongCubeItem;
+import it.unimi.dsi.fastutil.objects.Object2DoubleFunction;
+import it.unimi.dsi.fastutil.objects.Object2IntFunction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.sound.SoundEvent;
@@ -12,20 +14,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-public sealed abstract class AbstractSongPower<T extends AbstractSongPower<T>> permits DelaySongPower, DummySongPower, InstantSongPower, PersistSongPower {
+public sealed abstract class AbstractSongPower<T extends AbstractSongPower<T>> permits DelaySongPower, DummySongPower, InstantSongPower, IntervalSongPower, PersistSongPower {
     public static final List<AbstractSongPower<?>> POWERS = new ArrayList<>();
     private final String id;
     private final PowerCategory category;
     private final ItemStack icon;
-    private final ManaSupplier manaSupplier;
-    private CooldownSupplier cooldownSupplier = data -> 0;
+    private final Object2DoubleFunction<SongPowerDataHolder> manaSupplier;
+    private Object2IntFunction<SongPowerDataHolder> cooldownSupplier = data -> 0;
     protected Consumer<SongPowerDataHolder> apply = holder -> {
     };
     @Nullable
     protected SoundEvent applySound;
     private boolean experimental = false;
 
-    public AbstractSongPower(String id, PowerCategory category, ItemStack icon, ManaSupplier manaSupplier) {
+    public AbstractSongPower(String id, PowerCategory category, ItemStack icon, Object2DoubleFunction<SongPowerDataHolder> manaSupplier) {
         this.id = id;
         this.category = category;
         this.icon = icon;
@@ -65,7 +67,7 @@ public sealed abstract class AbstractSongPower<T extends AbstractSongPower<T>> p
     }
 
     public double getMana(SongPowerDataHolder data) {
-        return this.manaSupplier.getMana(data);
+        return this.manaSupplier.applyAsDouble(data);
     }
 
     public int getCooldown(SongPowerData.SinglePowerData data) {
@@ -73,14 +75,14 @@ public sealed abstract class AbstractSongPower<T extends AbstractSongPower<T>> p
     }
 
     public int getCooldown(SongPowerDataHolder data) {
-        return this.cooldownSupplier.getCooldown(data);
+        return this.cooldownSupplier.applyAsInt(data);
     }
 
     public T setCooldown(int ticks) {
         return this.setCooldown(data -> ticks);
     }
 
-    public T setCooldown(CooldownSupplier supplier) {
+    public T setCooldown(Object2IntFunction<SongPowerDataHolder> supplier) {
         this.cooldownSupplier = supplier;
         return this.get();
     }
@@ -128,17 +130,7 @@ public sealed abstract class AbstractSongPower<T extends AbstractSongPower<T>> p
         return this.experimental;
     }
 
-    @FunctionalInterface
-    public interface ManaSupplier {
-        double getMana(SongPowerDataHolder data);
-    }
-
-    @FunctionalInterface
-    public interface CooldownSupplier {
-        int getCooldown(SongPowerDataHolder data);
-    }
-
     protected enum PowerType {
-        INSTANT, PERSIST, DELAY, DUMMY;
+        INSTANT, INTERVAL, PERSIST, DELAY, DUMMY;
     }
 }

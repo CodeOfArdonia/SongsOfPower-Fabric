@@ -1,5 +1,6 @@
 package com.iafenvoy.sop.power;
 
+import it.unimi.dsi.fastutil.objects.Object2DoubleFunction;
 import net.minecraft.item.ItemStack;
 
 public non-sealed abstract class DummySongPower extends AbstractSongPower<DummySongPower> {
@@ -13,7 +14,7 @@ public non-sealed abstract class DummySongPower extends AbstractSongPower<DummyS
         this(id, category, icon, data -> mana);
     }
 
-    public DummySongPower(String id, PowerCategory category, ItemStack icon, ManaSupplier manaSupplier) {
+    public DummySongPower(String id, PowerCategory category, ItemStack icon, Object2DoubleFunction<SongPowerDataHolder> manaSupplier) {
         super(id, category, icon, manaSupplier);
     }
 

@@ -29,7 +29,7 @@ This mod add song abilities from Songs of War Animation.
 
 **HotKey: B**
 
-- Protesphere: Enable a protect shield and reduce 80% damage.
+- Protesphere **(Recommend AttributeFix)**: Enable a protect shield and reduce 80% damage.
 - Protepoint **(Experimental)**: Enable a fake shield.
 
 ### Supportium

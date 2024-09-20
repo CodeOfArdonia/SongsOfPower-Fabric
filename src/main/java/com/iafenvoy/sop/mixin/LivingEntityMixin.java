@@ -3,6 +3,7 @@ package com.iafenvoy.sop.mixin;
 import com.iafenvoy.sop.power.PowerCategory;
 import com.iafenvoy.sop.power.SongPowerData;
 import com.iafenvoy.sop.registry.SopPowers;
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -28,5 +29,15 @@ public abstract class LivingEntityMixin extends Entity {
                 this.setFlag(7, true);
                 ci.cancel();
             }
+    }
+
+    @SuppressWarnings("all")
+    @ModifyExpressionValue(method = "travel", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;hasStatusEffect(Lnet/minecraft/entity/effect/StatusEffect;)Z", ordinal = 0))
+    private boolean handleSlideSpeed(boolean original) {
+        if ((Object) this instanceof PlayerEntity player && SongPowerData.byPlayer(player).powerEnabled(PowerCategory.MOBILIUM, SopPowers.MOBILIGLIDE)) {
+            this.fallDistance = 0;
+            return true;
+        }
+        return original;
     }
 }

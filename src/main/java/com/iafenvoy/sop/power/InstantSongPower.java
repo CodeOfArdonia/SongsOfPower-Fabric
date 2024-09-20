@@ -1,5 +1,6 @@
 package com.iafenvoy.sop.power;
 
+import it.unimi.dsi.fastutil.objects.Object2DoubleFunction;
 import net.minecraft.item.ItemStack;
 
 public final class InstantSongPower extends AbstractSongPower<InstantSongPower> {
@@ -7,7 +8,7 @@ public final class InstantSongPower extends AbstractSongPower<InstantSongPower> 
         this(id, category, icon, data -> mana);
     }
 
-    public InstantSongPower(String id, PowerCategory category, ItemStack icon, ManaSupplier manaSupplier) {
+    public InstantSongPower(String id, PowerCategory category, ItemStack icon, Object2DoubleFunction<SongPowerDataHolder> manaSupplier) {
         super(id, category, icon, manaSupplier);
     }
 

@@ -1,11 +1,14 @@
 package com.iafenvoy.sop.registry;
 
-import com.iafenvoy.neptune.event.LivingEntityEvents;
+import com.iafenvoy.sop.Static;
 import com.iafenvoy.sop.entity.AggroSphereEntity;
 import com.iafenvoy.sop.power.*;
 import com.iafenvoy.sop.util.SopMath;
 import com.iafenvoy.sop.util.WorldUtil;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributeInstance;
+import net.minecraft.entity.attribute.EntityAttributeModifier;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
@@ -32,7 +35,7 @@ public final class SopPowers {
                     final Vec3d dir = SopMath.getRotationVectorUnit(player.getPitch(), player.getHeadYaw());
                     aggroSphere.refreshPositionAndAngles(player.getX(), (player.getY() + 1), player.getZ(), 0, 0);
                     aggroSphere.setVelocity(dir.multiply(speed));
-                    aggroSphere.setOwner(player);
+                    holder.processProjectile(aggroSphere);
                     world.spawnEntity(aggroSphere);
                 }
             });
@@ -56,10 +59,20 @@ public final class SopPowers {
                 PlayerEntity player = holder.getPlayer();
                 if (player.isOnGround() || player.getAbilities().flying) holder.cancel();
             });
+    public static final PersistSongPower MOBILIGLIDE = new PersistSongPower("mobiliglide", PowerCategory.MOBILIUM, new ItemStack(Items.PHANTOM_MEMBRANE), 1);//GRAVITY attribute not available before 1.20.5
     //Protisium
     public static final PersistSongPower PROTESPHERE = new PersistSongPower("protesphere", PowerCategory.PROTISIUM, new ItemStack(Items.NETHERITE_CHESTPLATE), 2)
             .setApplySound(SopSounds.PROTESPHERE)
-            .setUnapplySound(SopSounds.PROTESPHERE_UNAPPLY);//Protect will be handled by event.
+            .onApply(holder -> {
+                EntityAttributeInstance instance = holder.getPlayer().getAttributes().getCustomInstance(EntityAttributes.GENERIC_ARMOR);
+                if (instance != null)
+                    instance.addTemporaryModifier(new EntityAttributeModifier(Static.PROTESPHERE_UUID, "protesphere", 50, EntityAttributeModifier.Operation.ADDITION));
+            })
+            .setUnapplySound(SopSounds.PROTESPHERE_UNAPPLY)
+            .onUnapply(holder -> {
+                EntityAttributeInstance instance = holder.getPlayer().getAttributes().getCustomInstance(EntityAttributes.GENERIC_ARMOR);
+                if (instance != null) instance.removeModifier(Static.PROTESPHERE_UUID);
+            });
     public static final PersistSongPower PROTEPOINT = new PersistSongPower("protepoint", PowerCategory.PROTISIUM, new ItemStack(Items.SHIELD), 1)
             .setApplySound(SopSounds.PROTEPOINT).experimental()
             .onApply(holder -> {
@@ -71,6 +84,18 @@ public final class SopPowers {
                 if (holder.getPlayer().getOffHandStack().isOf(SopItems.PROTEPOINT_SHIELD))
                     holder.getPlayer().setStackInHand(Hand.OFF_HAND, ItemStack.EMPTY.copy());
             });
+    public static final IntervalSongPower PROTEHEAL = new IntervalSongPower("proteheal", PowerCategory.PROTISIUM, new ItemStack(Items.GOLDEN_APPLE), 30)
+            .setCooldown(200)
+            .setInterval(10)
+            .setTimes(10)
+            .onApply(holder -> {
+                PlayerEntity player = holder.getPlayer();
+                if (player.getHealth() >= player.getMaxHealth()) {
+                    holder.cancel();
+                    return;
+                }
+                player.heal(1);
+            });
     //Supportium
     public static final InstantSongPower SUPPOROLIFT = new InstantSongPower("supporolift", PowerCategory.SUPPORTIUM, new ItemStack(Items.STRING), 50)
             .setCooldown(200)
@@ -79,16 +104,11 @@ public final class SopPowers {
                 EntityHitResult result = WorldUtil.raycastEntity(player, 20);
                 if (result != null && result.getEntity() instanceof LivingEntity living) {
                     Vec3d dir = player.getPos().subtract(living.getPos()).multiply(0.2);
-                    living.setVelocity(dir);
+                    living.setVelocity(dir.add(0, 0.3, 0));
                     living.velocityModified = true;
                 } else holder.cancel();
             });
 
     public static void init() {
-        LivingEntityEvents.DAMAGE.register((livingEntity, damageSource, v) -> {
-            if (livingEntity instanceof PlayerEntity target && SongPowerData.byPlayer(target).powerEnabled(PowerCategory.PROTISIUM, PROTESPHERE))
-                v /= 5;
-            return v;
-        });
     }
 }

@@ -16,6 +16,7 @@ public class SongsOfPower implements ModInitializer {
     public void onInitialize() {
         SopCommands.init();
         SopEntities.init();
+        SopGameRules.init();
         SopItems.init();
         SopItemGroups.init();
         SopSounds.init();
