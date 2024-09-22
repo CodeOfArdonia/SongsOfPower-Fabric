@@ -39,3 +39,10 @@ This mod add song abilities from Songs of War Animation.
 **HotKey: N**
 
 - Supporolift: Pull a entity you are looking at in 20 blocks. (Cooldown: 200ticks / 10s)
+
+## My other works
+
+- **Songs of War**: SoW Main Mod [Curseforge](https://www.curseforge.com/minecraft/mc-mods/songs-of-war) | [Modrinth](https://modrinth.com/mod/songs-of-war)
+- **Songs of Origins**: SoW x Origins [Curseforge](https://www.curseforge.com/minecraft/mc-mods/songs-of-origins) | [Modrinth](https://modrinth.com/mod/songs-of-origins)
+- *Songs of Power*: Song abilities [Curseforge](https://www.curseforge.com/minecraft/mc-mods/songs-of-power) | [Modrinth](https://modrinth.com/mod/songs-of-power)
+- **Songs of War RPG**: SoW RPG Modpack [Curseforge](https://www.curseforge.com/minecraft/modpacks/songs-of-war-rpg) | [Modrinth](https://modrinth.com/modpack/songs-of-war-rpg)
