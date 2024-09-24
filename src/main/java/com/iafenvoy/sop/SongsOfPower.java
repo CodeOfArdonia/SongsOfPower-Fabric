@@ -1,5 +1,8 @@
 package com.iafenvoy.sop;
 
+import com.iafenvoy.jupiter.ServerConfigManager;
+import com.iafenvoy.jupiter.malilib.config.ConfigManager;
+import com.iafenvoy.sop.config.SopConfig;
 import com.iafenvoy.sop.power.PowerCategory;
 import com.iafenvoy.sop.power.SongPowerData;
 import com.iafenvoy.sop.registry.*;
@@ -14,6 +17,9 @@ public class SongsOfPower implements ModInitializer {
 
     @Override
     public void onInitialize() {
+        ConfigManager.getInstance().registerConfigHandler(SopConfig.INSTANCE);
+        ConfigManager.getInstance().registerServerConfig(SopConfig.INSTANCE, ServerConfigManager.PermissionChecker.IS_OPERATOR);
+
         SopCommands.init();
         SopEntities.init();
         SopGameRules.init();

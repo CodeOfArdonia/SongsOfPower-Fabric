@@ -1,6 +1,7 @@
 package com.iafenvoy.sop.registry;
 
 import com.iafenvoy.sop.Static;
+import com.iafenvoy.sop.config.SopConfig;
 import com.iafenvoy.sop.entity.AggroSphereEntity;
 import com.iafenvoy.sop.power.*;
 import com.iafenvoy.sop.util.SopMath;
@@ -22,10 +23,10 @@ import net.minecraft.world.World;
 @SuppressWarnings("unused")
 public final class SopPowers {
     //Aggressium
-    public static final DelaySongPower AGGROSPHERE = new DelaySongPower("aggrosphere", PowerCategory.AGGRESSIUM, new ItemStack(Items.FIRE_CHARGE), 10)
+    public static final DelaySongPower AGGROSPHERE = new DelaySongPower("aggrosphere", PowerCategory.AGGRESSIUM, new ItemStack(Items.FIRE_CHARGE), holder -> SopConfig.INSTANCE.power.aggrosphereMana.getDoubleValue())
             .setApplySound(SopSounds.AGGROSPHERE)
             .setDelay(6)
-            .setCooldown(10)
+            .setCooldown(holder -> SopConfig.INSTANCE.power.aggrosphereCooldown.getIntegerValue())
             .onApply(holder -> {
                 World world = holder.getWorld();
                 PlayerEntity player = holder.getPlayer();
@@ -40,10 +41,10 @@ public final class SopPowers {
                 }
             });
     //Mobilium
-    public static final DelaySongPower MOBILIFLASH = new DelaySongPower("mobiliflash", PowerCategory.MOBILIUM, new ItemStack(Items.ENDER_PEARL), 30)
+    public static final DelaySongPower MOBILIFLASH = new DelaySongPower("mobiliflash", PowerCategory.MOBILIUM, new ItemStack(Items.ENDER_PEARL), holder -> SopConfig.INSTANCE.power.mobiliflashMana.getDoubleValue())
             .setApplySound(SopSounds.MOBILIFLASH)
             .setDelay(20)
-            .setCooldown(40)
+            .setCooldown(holder -> SopConfig.INSTANCE.power.mobiliflashCooldown.getIntegerValue())
             .onApply(holder -> {
                 World world = holder.getWorld();
                 PlayerEntity player = holder.getPlayer();
@@ -52,16 +53,16 @@ public final class SopPowers {
                 player.setVelocity(dir.multiply(speed));
                 player.velocityModified = true;
             });
-    public static final PersistSongPower MOBILIWINGS = new PersistSongPower("mobiliwings", PowerCategory.MOBILIUM, new ItemStack(Items.ELYTRA), 1)
+    public static final PersistSongPower MOBILIWINGS = new PersistSongPower("mobiliwings", PowerCategory.MOBILIUM, new ItemStack(Items.ELYTRA), holder -> SopConfig.INSTANCE.power.mobiliwingsMana.getDoubleValue())
             .setApplySound(SoundEvents.ITEM_ARMOR_EQUIP_ELYTRA)
             .onApply(holder -> holder.getPlayer().startFallFlying())
             .onTick(holder -> {
                 PlayerEntity player = holder.getPlayer();
                 if (player.isOnGround() || player.getAbilities().flying) holder.cancel();
             });
-    public static final PersistSongPower MOBILIGLIDE = new PersistSongPower("mobiliglide", PowerCategory.MOBILIUM, new ItemStack(Items.PHANTOM_MEMBRANE), 1);//GRAVITY attribute not available before 1.20.5
+    public static final PersistSongPower MOBILIGLIDE = new PersistSongPower("mobiliglide", PowerCategory.MOBILIUM, new ItemStack(Items.PHANTOM_MEMBRANE), holder -> SopConfig.INSTANCE.power.mobiliglideMana.getDoubleValue());//GRAVITY attribute not available before 1.20.5
     //Protisium
-    public static final PersistSongPower PROTESPHERE = new PersistSongPower("protesphere", PowerCategory.PROTISIUM, new ItemStack(Items.NETHERITE_CHESTPLATE), 2)
+    public static final PersistSongPower PROTESPHERE = new PersistSongPower("protesphere", PowerCategory.PROTISIUM, new ItemStack(Items.NETHERITE_CHESTPLATE), holder -> SopConfig.INSTANCE.power.protesphereMana.getDoubleValue())
             .setApplySound(SopSounds.PROTESPHERE)
             .onApply(holder -> {
                 EntityAttributeInstance instance = holder.getPlayer().getAttributes().getCustomInstance(EntityAttributes.GENERIC_ARMOR);
@@ -73,7 +74,7 @@ public final class SopPowers {
                 EntityAttributeInstance instance = holder.getPlayer().getAttributes().getCustomInstance(EntityAttributes.GENERIC_ARMOR);
                 if (instance != null) instance.removeModifier(Static.PROTESPHERE_UUID);
             });
-    public static final PersistSongPower PROTEPOINT = new PersistSongPower("protepoint", PowerCategory.PROTISIUM, new ItemStack(Items.SHIELD), 1)
+    public static final PersistSongPower PROTEPOINT = new PersistSongPower("protepoint", PowerCategory.PROTISIUM, new ItemStack(Items.SHIELD), holder -> SopConfig.INSTANCE.power.protepointMana.getDoubleValue())
             .setApplySound(SopSounds.PROTEPOINT).experimental()
             .onApply(holder -> {
                 ItemStack stack = new ItemStack(SopItems.PROTEPOINT_SHIELD);
@@ -84,8 +85,8 @@ public final class SopPowers {
                 if (holder.getPlayer().getOffHandStack().isOf(SopItems.PROTEPOINT_SHIELD))
                     holder.getPlayer().setStackInHand(Hand.OFF_HAND, ItemStack.EMPTY.copy());
             });
-    public static final IntervalSongPower PROTEHEAL = new IntervalSongPower("proteheal", PowerCategory.PROTISIUM, new ItemStack(Items.GOLDEN_APPLE), 30)
-            .setCooldown(200)
+    public static final IntervalSongPower PROTEHEAL = new IntervalSongPower("proteheal", PowerCategory.PROTISIUM, new ItemStack(Items.GOLDEN_APPLE), holder -> SopConfig.INSTANCE.power.protehealMana.getDoubleValue())
+            .setCooldown(holder -> SopConfig.INSTANCE.power.protehealCooldown.getIntegerValue())
             .setInterval(10)
             .setTimes(10)
             .onApply(holder -> {
@@ -97,8 +98,8 @@ public final class SopPowers {
                 player.heal(1);
             });
     //Supportium
-    public static final InstantSongPower SUPPOROLIFT = new InstantSongPower("supporolift", PowerCategory.SUPPORTIUM, new ItemStack(Items.STRING), 50)
-            .setCooldown(200)
+    public static final InstantSongPower SUPPOROLIFT = new InstantSongPower("supporolift", PowerCategory.SUPPORTIUM, new ItemStack(Items.STRING), holder -> SopConfig.INSTANCE.power.supporoliftMana.getDoubleValue())
+            .setCooldown(holder -> SopConfig.INSTANCE.power.supporoliftCooldown.getIntegerValue())
             .onApply(holder -> {
                 PlayerEntity player = holder.getPlayer();
                 EntityHitResult result = WorldUtil.raycastEntity(player, 20);

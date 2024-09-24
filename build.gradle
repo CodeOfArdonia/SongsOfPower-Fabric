@@ -24,6 +24,7 @@ repositories {
         url = 'https://maven.ladysnake.org/releases'
     }
     maven { url = 'https://jitpack.io' }
+    maven { url "https://maven.terraformersmc.com/releases/" }
 }
 
 dependencies {
@@ -38,9 +39,14 @@ dependencies {
     // Neptune cross-platform library
     modImplementation "maven.modrinth:neptune:kCHo1jHk"
 
+    //Jupiter
+    modImplementation "maven.modrinth:jupiter:elRfRGl9"
+
     modApi(include("dev.onyxstudios.cardinal-components-api:cardinal-components-base:${project.cca_version}"))
     modApi(include("dev.onyxstudios.cardinal-components-api:cardinal-components-entity:${project.cca_version}"))
     modImplementation(include("com.github.CrimsonDawn45:Fabric-Shield-Lib:v${project.fabric_shield_lib_version}"))
+
+    modApi "com.terraformersmc:modmenu:7.2.2"
 }
 
 processResources {
