@@ -17,6 +17,7 @@ This mod add song abilities from Songs of War Animation.
 **HotKey: C**
 
 - Aggrosphere: Fire a sphere and damage hit entity or create explosion. (Cooldown: 10ticks / 0.5s)
+- Aggroquake: Push entities around you away and damage them. (Cooldown: 300ticks / 15s)
 
 ### Mobilium
 

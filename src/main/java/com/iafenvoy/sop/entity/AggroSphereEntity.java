@@ -2,6 +2,7 @@ package com.iafenvoy.sop.entity;
 
 import com.iafenvoy.neptune.object.DamageUtil;
 import com.iafenvoy.neptune.util.RandomHelper;
+import com.iafenvoy.sop.config.SopConfig;
 import com.iafenvoy.sop.world.FakeExplosionBehavior;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -30,12 +31,13 @@ public class AggroSphereEntity extends SopProjectileEntity {
         }
         LivingEntity target = this.getEntityWorld().getClosestEntity(LivingEntity.class, TargetPredicate.DEFAULT, null, this.getX(), this.getY(), this.getZ(), new Box(this.getPos().add(1, 1, 1), this.getPos().subtract(1, 1, 1)));
         if (target != null) {
+            float damage = SopConfig.INSTANCE.aggressium.aggrosphereDamage.getFloatValue();
             ServerPlayerEntity attacker = this.getOwner() instanceof ServerPlayerEntity player ? player : null;
             if (target.getMainHandStack().isOf(Items.SHIELD) && target.isUsingItem())
-                target.getMainHandStack().damage((int) this.transformDamage(5), target.getRandom(), attacker);
+                target.getMainHandStack().damage((int) this.transformDamage(damage), target.getRandom(), attacker);
             else if (target.getOffHandStack().isOf(Items.SHIELD) && target.isUsingItem())
-                target.getOffHandStack().damage((int) this.transformDamage(5), target.getRandom(), attacker);
-            else target.damage(DamageUtil.build(target, DamageTypes.MOB_ATTACK), this.transformDamage(5));
+                target.getOffHandStack().damage((int) this.transformDamage(damage), target.getRandom(), attacker);
+            else target.damage(DamageUtil.build(target, DamageTypes.MOB_ATTACK), this.transformDamage(damage));
             this.remove(RemovalReason.DISCARDED);
         }
         for (int i = 0; i < 9; i++)
