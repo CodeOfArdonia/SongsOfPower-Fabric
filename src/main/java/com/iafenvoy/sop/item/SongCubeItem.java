@@ -2,10 +2,15 @@ package com.iafenvoy.sop.item;
 
 import com.iafenvoy.sop.power.AbstractSongPower;
 import com.iafenvoy.sop.power.PowerCategory;
+import com.iafenvoy.sop.world.ShrineStructureHelper;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Rarity;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
@@ -32,6 +37,13 @@ public class SongCubeItem extends Item {
         tooltip.add(Text.translatable(power.getTranslateKey()).formatted(this.type.getColor()));
         if (power.isExperimental())
             tooltip.add(Text.translatable("item.sop.song.experimental"));
+    }
+
+    @Override
+    public ActionResult useOnBlock(ItemUsageContext context) {
+        if (context.getWorld() instanceof ServerWorld serverWorld && context.getPlayer() instanceof ServerPlayerEntity player)
+            player.sendMessage(Text.literal(ShrineStructureHelper.match(player.getBlockPos(), serverWorld) ? "Match" : "Not Match"));
+        return super.useOnBlock(context);
     }
 
     public AbstractSongPower<?> getPower(ItemStack stack) {
