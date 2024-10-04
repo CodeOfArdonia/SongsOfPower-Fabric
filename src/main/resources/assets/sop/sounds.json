@@ -1,4 +1,12 @@
 {
+  "aggroquake": {
+    "sounds": [
+      {
+        "name": "sop:aggroquake",
+        "stream": false
+      }
+    ]
+  },
   "aggrosphere": {
     "sounds": [
       {

@@ -25,6 +25,9 @@
     ],
     "cardinal-components-entity": [
       "com.iafenvoy.sop.component.ModComponentEntry"
+    ],
+    "modmenu": [
+      "com.iafenvoy.sop.ModMenu"
     ]
   },
   "custom": {
@@ -37,6 +40,8 @@
   ],
   "depends": {
     "fabricloader": "*",
-    "minecraft": "~1.20.1"
+    "minecraft": "~1.20.1",
+    "neptune": ">=1.2",
+    "jupiter": "*"
   }
 }

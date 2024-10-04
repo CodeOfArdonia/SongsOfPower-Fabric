@@ -17,6 +17,7 @@ This mod add song abilities from Songs of War Animation.
 **HotKey: C**
 
 - Aggrosphere: Fire a sphere and damage hit entity or create explosion. (Cooldown: 10ticks / 0.5s)
+- Aggroquake: Push entities around you away and damage them. (Cooldown: 300ticks / 15s)
 
 ### Mobilium
 
@@ -24,6 +25,7 @@ This mod add song abilities from Songs of War Animation.
 
 - Mobiliflash: Teleport to the direction you see, has a delay of 10 ticks. (Cooldown: 40ticks / 2s)
 - Mobiliwings: Enable a fake elytra and into sliding mode.
+- Mobiliglide: Slow falling.
 
 ### Protisium
 
@@ -31,9 +33,17 @@ This mod add song abilities from Songs of War Animation.
 
 - Protesphere **(Recommend AttributeFix)**: Enable a protect shield and reduce 80% damage.
 - Protepoint **(Experimental)**: Enable a fake shield.
+- Proteheal: Heal 10 times with 1 health each. (Cooldown: 200ticks / 10s)
 
 ### Supportium
 
 **HotKey: N**
 
 - Supporolift: Pull a entity you are looking at in 20 blocks. (Cooldown: 200ticks / 10s)
+
+## My other works
+
+- **Songs of War**: SoW Main Mod [Curseforge](https://www.curseforge.com/minecraft/mc-mods/songs-of-war) | [Modrinth](https://modrinth.com/mod/songs-of-war)
+- **Songs of Origins**: SoW x Origins [Curseforge](https://www.curseforge.com/minecraft/mc-mods/songs-of-origins) | [Modrinth](https://modrinth.com/mod/songs-of-origins)
+- *Songs of Power*: Song abilities [Curseforge](https://www.curseforge.com/minecraft/mc-mods/songs-of-power) | [Modrinth](https://modrinth.com/mod/songs-of-power)
+- **Songs of War RPG**: SoW RPG Modpack [Curseforge](https://www.curseforge.com/minecraft/modpacks/songs-of-war-rpg) | [Modrinth](https://modrinth.com/modpack/songs-of-war-rpg)

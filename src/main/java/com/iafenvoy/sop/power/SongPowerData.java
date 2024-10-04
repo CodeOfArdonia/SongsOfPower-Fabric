@@ -1,6 +1,7 @@
 package com.iafenvoy.sop.power;
 
 import com.iafenvoy.sop.component.SongPowerComponent;
+import com.iafenvoy.sop.config.SopConfig;
 import com.iafenvoy.sop.item.SongCubeItem;
 import com.iafenvoy.sop.util.Serializable;
 import com.iafenvoy.sop.util.Tickable;
@@ -136,7 +137,8 @@ public class SongPowerData implements Serializable, Tickable {
 
         @Override
         public void tick() {
-            this.recoverMana = 0.5;
+            this.maxMana = SopConfig.INSTANCE.mana.MAX_MANA.get(this.type).getDoubleValue();
+            this.recoverMana = SopConfig.INSTANCE.mana.RECOVER_MANA.get(this.type).getDoubleValue();
             if (!this.ready()) this.cooldown--;
             if (this.isEnabled() && !this.parent.player.getEntityWorld().isClient && this.activePower instanceof PersistSongPower persistSongPower)
                 if (persistSongPower.tick(this)) this.disable();
