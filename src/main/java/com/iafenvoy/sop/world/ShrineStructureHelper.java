@@ -3,7 +3,9 @@ package com.iafenvoy.sop.world;
 import com.iafenvoy.sop.SongsOfPower;
 import com.iafenvoy.sop.mixin.StructureTemplateAccessor;
 import com.iafenvoy.sop.registry.SopTags;
+import net.minecraft.block.BlockState;
 import net.minecraft.block.Blocks;
+import net.minecraft.registry.tag.BlockTags;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.structure.StructureTemplate;
 import net.minecraft.util.Identifier;
@@ -28,16 +30,21 @@ public class ShrineStructureHelper {
         List<StructureTemplate.StructureBlockInfo> blocks = templates.get(0).getAll();
         for (StructureTemplate.StructureBlockInfo block : blocks) {
             BlockPos pos = playerPos.add(block.pos());
+            BlockState state = world.getBlockState(pos);
             if (block.state().isAir()) {
-                if (world.getBlockState(pos).isFullCube(world, pos)) return false;
+                if (state.isFullCube(world, pos) && !state.isIn(BlockTags.LEAVES)) return false;
             } else if (block.state().isOf(Blocks.STONE_BRICKS)) {
-                if (!world.getBlockState(pos).isIn(SopTags.STONE_BRICKS)) return false;
+                if (!state.isIn(SopTags.STONE_BRICKS)) return false;
             } else if (block.state().isOf(Blocks.STONE_BRICK_STAIRS)) {
-                if (!world.getBlockState(pos).isIn(SopTags.STONE_BRICK_STAIRS)) return false;
+                if (!state.isIn(SopTags.STONE_BRICK_STAIRS)) return false;
             } else {
-                if (!world.getBlockState(pos).isOf(block.state().getBlock())) return false;
+                if (!state.isOf(block.state().getBlock())) return false;
             }
         }
         return true;
+    }
+
+    public static void generate(BlockPos origin, ServerWorld world) {
+
     }
 }
