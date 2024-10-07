@@ -16,14 +16,15 @@ This mod add song abilities from Songs of War Animation.
 
 **HotKey: C**
 
-- Aggrosphere: Fire a sphere and damage hit entity or create explosion. (Cooldown: 10ticks / 0.5s)
-- Aggroquake: Push entities around you away and damage them. (Cooldown: 300ticks / 15s)
+- Aggrosphere: Fire a sphere and damage hit entity or create explosion.
+- Aggroquake: Push entities around you away and damage them.
+- Aggroshock **(Experimental)**: Generate lightnings.
 
 ### Mobilium
 
 **HotKey: V**
 
-- Mobiliflash: Teleport to the direction you see, has a delay of 10 ticks. (Cooldown: 40ticks / 2s)
+- Mobiliflash: Teleport to the direction you see, has a delay of 10 ticks.
 - Mobiliwings: Enable a fake elytra and into sliding mode.
 - Mobiliglide: Slow falling.
 
@@ -32,14 +33,14 @@ This mod add song abilities from Songs of War Animation.
 **HotKey: B**
 
 - Protesphere **(Recommend AttributeFix)**: Enable a protect shield and reduce 80% damage.
-- Protepoint **(Experimental)**: Enable a fake shield.
-- Proteheal: Heal 10 times with 1 health each. (Cooldown: 200ticks / 10s)
+- Protepoint: Enable a fake shield.
+- Proteheal: Heal 10 times with 1 health each.
 
 ### Supportium
 
 **HotKey: N**
 
-- Supporolift: Pull a entity you are looking at in 20 blocks. (Cooldown: 200ticks / 10s)
+- Supporolift: Pull a entity you are looking at in 20 blocks.
 
 ## My other works
 

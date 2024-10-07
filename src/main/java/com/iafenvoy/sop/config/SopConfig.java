@@ -34,6 +34,10 @@ public class SopConfig extends AutoInitConfigContainer {
         public final ConfigDouble aggroquakeExhaustion = new ConfigDouble("config.sop.power.aggroquake.exhaustion", 4, 0, Integer.MAX_VALUE);
         public final ConfigDouble aggroquakeRange = new ConfigDouble("config.sop.power.aggroquake.range", 8, 0, Integer.MAX_VALUE);
         public final ConfigDouble aggroquakeDamage = new ConfigDouble("config.sop.power.aggroquake.damage", 5, 0, Integer.MAX_VALUE);
+        public final ConfigInteger aggroshockPrimaryCooldown = new ConfigInteger("config.sop.power.aggroshock.cooldown.primary", 300, 0, Integer.MAX_VALUE);
+        public final ConfigInteger aggroshockSecondaryCooldown = new ConfigInteger("config.sop.power.aggroshock.cooldown.secondary", 300, 0, Integer.MAX_VALUE);
+        public final ConfigDouble aggroshockExhaustion = new ConfigDouble("config.sop.power.aggroshock.exhaustion", 4, 0, Integer.MAX_VALUE);
+        public final ConfigInteger aggroshockDistance = new ConfigInteger("config.sop.power.aggroshock.distance", 8, 0, Integer.MAX_VALUE);
 
         public AggressiumPowerConfig() {
             super("aggressium", "config.sop.category.power.aggressium");

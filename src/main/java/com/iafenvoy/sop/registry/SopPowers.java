@@ -1,6 +1,7 @@
 package com.iafenvoy.sop.registry;
 
 import com.iafenvoy.neptune.object.DamageUtil;
+import com.iafenvoy.neptune.object.EntityUtil;
 import com.iafenvoy.sop.Static;
 import com.iafenvoy.sop.config.SopConfig;
 import com.iafenvoy.sop.entity.AggroSphereEntity;
@@ -14,6 +15,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.EntityHitResult;
@@ -63,6 +65,20 @@ public final class SopPowers {
                     living.damage(DamageUtil.build(living, DamageTypes.MOB_ATTACK), SopConfig.INSTANCE.aggressium.aggroquakeDamage.getFloatValue());
                     living.setVelocity(dir.add(0, 0.5, 0));
                     living.velocityModified = true;
+                }
+            });
+    public static final InstantSongPower AGGROSHOCK = new InstantSongPower("aggroshock", PowerCategory.AGGRESSIUM).experimental()
+            .setPrimaryCooldown(holder -> SopConfig.INSTANCE.aggressium.aggroshockPrimaryCooldown.getIntegerValue())
+            .setSecondaryCooldown(holder -> SopConfig.INSTANCE.aggressium.aggroshockSecondaryCooldown.getIntegerValue())
+            .setExhaustion(holder -> SopConfig.INSTANCE.aggressium.aggroshockExhaustion.getFloatValue())
+            .onApply(holder -> {
+                if (!(holder.getWorld() instanceof ServerWorld serverWorld)) return;
+                PlayerEntity player = holder.getPlayer();
+                final Vec3d dir = SopMath.getRotationVectorUnit(player.getPitch(), player.getHeadYaw());
+                Vec3d pos = player.getPos();
+                for (int i = 0; i < SopConfig.INSTANCE.aggressium.aggroshockDistance.getIntegerValue(); i++) {
+                    pos = pos.add(dir);
+                    EntityUtil.lightening(serverWorld, pos.x, pos.y, pos.z, false);
                 }
             });
     //Mobilium
@@ -115,7 +131,7 @@ public final class SopPowers {
                 EntityAttributeInstance instance = holder.getPlayer().getAttributes().getCustomInstance(EntityAttributes.GENERIC_ARMOR);
                 if (instance != null) instance.removeModifier(Static.PROTESPHERE_UUID);
             });
-    public static final PersistSongPower PROTEPOINT = new PersistSongPower("protepoint", PowerCategory.PROTISIUM).experimental()
+    public static final PersistSongPower PROTEPOINT = new PersistSongPower("protepoint", PowerCategory.PROTISIUM)
             .setApplySound(SopSounds.PROTEPOINT)
             .setExhaustion(holder -> SopConfig.INSTANCE.protisium.protepointExhaustion.getFloatValue())
             .onApply(holder -> {
