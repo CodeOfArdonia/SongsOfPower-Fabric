@@ -1,7 +1,6 @@
 package com.iafenvoy.sop.power;
 
 import com.iafenvoy.sop.component.SongPowerComponent;
-import com.iafenvoy.sop.config.SopConfig;
 import com.iafenvoy.sop.item.SongCubeItem;
 import com.iafenvoy.sop.util.Serializable;
 import com.iafenvoy.sop.util.Tickable;
@@ -101,10 +100,8 @@ public class SongPowerData implements Serializable, Tickable {
         private final PowerCategory type;
         private AbstractSongPower<?> activePower = DummySongPower.EMPTY;
         private boolean enabled = false;
-        private double maxMana = 100;
-        private double remainMana = 100;
-        private double recoverMana = 0.5;
-        private int cooldown = 0;
+        private int primaryCooldown = 0;
+        private int secondaryCooldown = 0;
         private ItemStack holdItem = ItemStack.EMPTY;
 
         public SinglePowerData(SongPowerData parent, PowerCategory type) {
@@ -116,10 +113,8 @@ public class SongPowerData implements Serializable, Tickable {
         @Override
         public void encode(NbtCompound tag) {
             tag.putBoolean("enabled", this.enabled);
-            tag.putDouble("maxMana", this.maxMana);
-            tag.putDouble("remainMana", this.remainMana);
-            tag.putDouble("recoverMana", this.recoverMana);
-            tag.putInt("cooldown", this.cooldown);
+            tag.putInt("primaryCooldown", this.primaryCooldown);
+            tag.putInt("secondaryCooldown", this.secondaryCooldown);
             NbtCompound compound = new NbtCompound();
             this.holdItem.writeNbt(compound);
             tag.put("holdItem", compound);
@@ -128,26 +123,18 @@ public class SongPowerData implements Serializable, Tickable {
         @Override
         public void decode(NbtCompound tag) {
             this.enabled = tag.getBoolean("enabled");
-            this.maxMana = tag.getDouble("maxMana");
-            this.remainMana = tag.getDouble("remainMana");
-            this.recoverMana = tag.getDouble("recoverMana");
-            this.cooldown = tag.getInt("cooldown");
+            this.primaryCooldown = tag.getInt("primaryCooldown");
+            this.secondaryCooldown = tag.getInt("secondaryCooldown");
             this.setHoldItem(ItemStack.fromNbt(tag.getCompound("holdItem")));
         }
 
         @Override
         public void tick() {
-            this.maxMana = SopConfig.INSTANCE.mana.MAX_MANA.get(this.type).getDoubleValue();
-            this.recoverMana = SopConfig.INSTANCE.mana.RECOVER_MANA.get(this.type).getDoubleValue();
-            if (!this.ready()) this.cooldown--;
+            State state = this.getState();
+            if (state == State.DENY) this.primaryCooldown--;
+            else if (state == State.RECOVER) this.secondaryCooldown--;
             if (this.isEnabled() && !this.parent.player.getEntityWorld().isClient && this.activePower instanceof PersistSongPower persistSongPower)
                 if (persistSongPower.tick(this)) this.disable();
-            this.remainMana += this.recoverMana;
-            if (this.remainMana > this.maxMana) this.remainMana = this.maxMana;
-            if (this.remainMana < 0) {
-                this.remainMana += this.maxMana;
-                this.parent.player.addExhaustion(8);
-            }
         }
 
         public void keyPress() {
@@ -161,7 +148,11 @@ public class SongPowerData implements Serializable, Tickable {
             } else {
                 if (this.activePower.isPersist()) this.enable();
                 else {
-                    if (this.ready()) this.activePower.apply(this);
+                    if (this.getState() == State.RECOVER) {
+                        this.getPlayer().addExhaustion(this.activePower.getExhaustion(this));
+                        this.secondaryCooldown = 0;
+                    }
+                    if (this.getState() == State.ALLOW) this.activePower.apply(this);
                 }
             }
         }
@@ -222,14 +213,6 @@ public class SongPowerData implements Serializable, Tickable {
                 throw new IllegalArgumentException("holdItem should be a song cube.");
         }
 
-        public double getMaxMana() {
-            return this.maxMana;
-        }
-
-        public double getRemainMana() {
-            return this.remainMana;
-        }
-
         public boolean hasPower() {
             return !this.holdItem.isEmpty() && !this.activePower.isEmpty();
         }
@@ -238,20 +221,27 @@ public class SongPowerData implements Serializable, Tickable {
             return this.parent.player;
         }
 
-        public int getCooldown() {
-            return this.cooldown;
+        public int getPrimaryCooldown() {
+            return this.primaryCooldown;
         }
 
-        public void reduceMana(double amount) {
-            this.remainMana -= amount;
+        public int getSecondaryCooldown() {
+            return this.secondaryCooldown;
         }
 
-        public boolean ready() {
-            return this.cooldown <= 0;
+        public State getState() {
+            if (this.primaryCooldown > 0) return State.DENY;
+            if (this.secondaryCooldown > 0) return State.RECOVER;
+            return State.ALLOW;
         }
 
         public void cooldown() {
-            this.cooldown = this.activePower.getCooldown(this);
+            this.primaryCooldown = this.activePower.getPrimaryCooldown(this);
+            this.secondaryCooldown = this.activePower.getSecondaryCooldown(this);
         }
+    }
+
+    public enum State {
+        ALLOW, RECOVER, DENY;
     }
 }

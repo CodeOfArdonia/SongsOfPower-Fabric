@@ -64,10 +64,6 @@ public class SongPowerDataHolder {
         return this.cancelled;
     }
 
-    public void reduceMana(double amount) {
-        this.data.reduceMana(amount);
-    }
-
     public void cooldown() {
         this.data.cooldown();
     }

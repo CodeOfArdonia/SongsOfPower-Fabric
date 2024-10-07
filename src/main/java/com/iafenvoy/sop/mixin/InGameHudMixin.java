@@ -22,6 +22,6 @@ public class InGameHudMixin {
 
     @Inject(method = "render", at = @At("RETURN"))
     private void renderPowerHud(DrawContext context, float tickDelta, CallbackInfo ci) {
-        PowerHudRenderer.render(this.client, context, tickDelta);
+        PowerHudRenderer.render(this.client, context);
     }
 }

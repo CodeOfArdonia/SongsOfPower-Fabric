@@ -1,7 +1,5 @@
 package com.iafenvoy.sop.power;
 
-import it.unimi.dsi.fastutil.objects.Object2DoubleFunction;
-import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundEvent;
 import org.jetbrains.annotations.Nullable;
 
@@ -14,12 +12,8 @@ public final class PersistSongPower extends AbstractSongPower<PersistSongPower> 
     @Nullable
     private SoundEvent unapplySound;
 
-    public PersistSongPower(String id, PowerCategory category, ItemStack icon, double mana) {
-        this(id, category, icon, data -> mana);
-    }
-
-    public PersistSongPower(String id, PowerCategory category, ItemStack icon, Object2DoubleFunction<SongPowerDataHolder> manaSupplier) {
-        super(id, category, icon, manaSupplier);
+    public PersistSongPower(String id, PowerCategory category) {
+        super(id, category);
     }
 
     public PersistSongPower setUnapplySound(@Nullable SoundEvent unapplySound) {
@@ -48,7 +42,7 @@ public final class PersistSongPower extends AbstractSongPower<PersistSongPower> 
     public boolean tick(SongPowerData.SinglePowerData data) {
         SongPowerDataHolder holder = new SongPowerDataHolder(data);
         this.tick.accept(holder);
-        if(!holder.isCancelled()) holder.reduceMana(this.getMana(holder));
+        if (!holder.isCancelled()) data.getPlayer().addExhaustion(this.getExhaustion(data) / 20);
         return holder.isCancelled();
     }
 

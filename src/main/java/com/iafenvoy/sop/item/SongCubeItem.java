@@ -41,8 +41,12 @@ public class SongCubeItem extends Item {
 
     @Override
     public ActionResult useOnBlock(ItemUsageContext context) {
-        if (context.getWorld() instanceof ServerWorld serverWorld && context.getPlayer() instanceof ServerPlayerEntity player)
-            player.sendMessage(Text.literal(ShrineStructureHelper.match(player.getBlockPos(), serverWorld) ? "Match" : "Not Match"));
+        if (context.getWorld() instanceof ServerWorld serverWorld && context.getPlayer() instanceof ServerPlayerEntity player) {
+            if (context.getPlayer().isSneaking())
+                ShrineStructureHelper.generate(player.getBlockPos(), serverWorld);
+            else
+                player.sendMessage(Text.literal(ShrineStructureHelper.match(player.getBlockPos(), serverWorld) ? "Match" : "Not Match"));
+        }
         return super.useOnBlock(context);
     }
 

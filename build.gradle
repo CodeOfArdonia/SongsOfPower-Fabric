@@ -37,7 +37,7 @@ dependencies {
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
     // Neptune cross-platform library
-    modImplementation "maven.modrinth:neptune:kCHo1jHk"
+    modImplementation "maven.modrinth:neptune:zMTlhkbC"
 
     //Jupiter
     modImplementation "maven.modrinth:jupiter:elRfRGl9"

@@ -3,11 +3,12 @@ package com.iafenvoy.sop.power;
 import com.iafenvoy.neptune.object.SoundUtil;
 import com.iafenvoy.sop.SongsOfPower;
 import com.iafenvoy.sop.item.SongCubeItem;
-import it.unimi.dsi.fastutil.objects.Object2DoubleFunction;
+import it.unimi.dsi.fastutil.objects.Object2FloatFunction;
 import it.unimi.dsi.fastutil.objects.Object2IntFunction;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.sound.SoundEvent;
+import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -18,20 +19,17 @@ public sealed abstract class AbstractSongPower<T extends AbstractSongPower<T>> p
     public static final List<AbstractSongPower<?>> POWERS = new ArrayList<>();
     private final String id;
     private final PowerCategory category;
-    private final ItemStack icon;
-    private final Object2DoubleFunction<SongPowerDataHolder> manaSupplier;
-    private Object2IntFunction<SongPowerDataHolder> cooldownSupplier = data -> 0;
+    private Object2IntFunction<SongPowerDataHolder> primaryCooldownSupplier = data -> 0, secondaryCooldownSupplier = data -> 0;
+    private Object2FloatFunction<SongPowerDataHolder> exhaustion = data -> 0;
     protected Consumer<SongPowerDataHolder> apply = holder -> {
     };
     @Nullable
     protected SoundEvent applySound;
     private boolean experimental = false;
 
-    public AbstractSongPower(String id, PowerCategory category, ItemStack icon, Object2DoubleFunction<SongPowerDataHolder> manaSupplier) {
+    public AbstractSongPower(String id, PowerCategory category) {
         this.id = id;
         this.category = category;
-        this.icon = icon;
-        this.manaSupplier = manaSupplier;
         if (category != null) {
             POWERS.add(this);
             category.registerPower(this);
@@ -52,8 +50,9 @@ public sealed abstract class AbstractSongPower<T extends AbstractSongPower<T>> p
         return this.category;
     }
 
-    public ItemStack getIcon() {
-        return this.icon;
+    public Identifier getIconTexture() {
+        if (this.isEmpty()) return new Identifier("textures/item/barrier.png");
+        return new Identifier(SongsOfPower.MOD_ID, "textures/power/" + this.id + ".png");
     }
 
     public T onApply(Consumer<SongPowerDataHolder> apply) {
@@ -66,24 +65,54 @@ public sealed abstract class AbstractSongPower<T extends AbstractSongPower<T>> p
         return this.get();
     }
 
-    public double getMana(SongPowerDataHolder data) {
-        return this.manaSupplier.applyAsDouble(data);
+    public int getPrimaryCooldown(SongPowerData.SinglePowerData data) {
+        return this.getPrimaryCooldown(new SongPowerDataHolder(data));
     }
 
-    public int getCooldown(SongPowerData.SinglePowerData data) {
-        return this.getCooldown(new SongPowerDataHolder(data));
+    public int getPrimaryCooldown(SongPowerDataHolder data) {
+        return this.primaryCooldownSupplier.applyAsInt(data);
     }
 
-    public int getCooldown(SongPowerDataHolder data) {
-        return this.cooldownSupplier.applyAsInt(data);
+    public T setPrimaryCooldown(int ticks) {
+        return this.setPrimaryCooldown(data -> ticks);
     }
 
-    public T setCooldown(int ticks) {
-        return this.setCooldown(data -> ticks);
+    public T setPrimaryCooldown(Object2IntFunction<SongPowerDataHolder> supplier) {
+        this.primaryCooldownSupplier = supplier;
+        return this.get();
     }
 
-    public T setCooldown(Object2IntFunction<SongPowerDataHolder> supplier) {
-        this.cooldownSupplier = supplier;
+    public int getSecondaryCooldown(SongPowerData.SinglePowerData data) {
+        return this.getSecondaryCooldown(new SongPowerDataHolder(data));
+    }
+
+    public int getSecondaryCooldown(SongPowerDataHolder data) {
+        return this.secondaryCooldownSupplier.applyAsInt(data);
+    }
+
+    public T setSecondaryCooldown(int ticks) {
+        return this.setSecondaryCooldown(data -> ticks);
+    }
+
+    public T setSecondaryCooldown(Object2IntFunction<SongPowerDataHolder> supplier) {
+        this.secondaryCooldownSupplier = supplier;
+        return this.get();
+    }
+
+    public float getExhaustion(SongPowerData.SinglePowerData data) {
+        return this.getExhaustion(new SongPowerDataHolder(data));
+    }
+
+    public float getExhaustion(SongPowerDataHolder data) {
+        return this.exhaustion.apply(data);
+    }
+
+    public T setExhaustion(float exhaustion) {
+        return this.setExhaustion(data -> exhaustion);
+    }
+
+    public T setExhaustion(Object2FloatFunction<SongPowerDataHolder> exhaustion) {
+        this.exhaustion = exhaustion;
         return this.get();
     }
 

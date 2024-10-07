@@ -1,20 +1,14 @@
 package com.iafenvoy.sop.power;
 
 import com.iafenvoy.neptune.util.Timeout;
-import it.unimi.dsi.fastutil.objects.Object2DoubleFunction;
 import it.unimi.dsi.fastutil.objects.Object2IntFunction;
-import net.minecraft.item.ItemStack;
 
 public final class IntervalSongPower extends AbstractSongPower<IntervalSongPower> {
     private Object2IntFunction<SongPowerDataHolder> times = data -> 0;
     private Object2IntFunction<SongPowerDataHolder> interval = data -> 0;
 
-    public IntervalSongPower(String id, PowerCategory category, ItemStack icon, double mana) {
-        this(id, category, icon, data -> mana);
-    }
-
-    public IntervalSongPower(String id, PowerCategory category, ItemStack icon, Object2DoubleFunction<SongPowerDataHolder> manaSupplier) {
-        super(id, category, icon, manaSupplier);
+    public IntervalSongPower(String id, PowerCategory category) {
+        super(id, category);
     }
 
     public IntervalSongPower setInterval(int interval) {
@@ -39,7 +33,6 @@ public final class IntervalSongPower extends AbstractSongPower<IntervalSongPower
     protected void applyInternal(SongPowerDataHolder holder) {
         this.apply.accept(holder);
         if(holder.isCancelled()) return;
-        holder.reduceMana(this.getMana(holder));
         Timeout.create(this.interval.applyAsInt(holder), this.times.applyAsInt(holder), () -> this.apply.accept(holder));
     }
 
