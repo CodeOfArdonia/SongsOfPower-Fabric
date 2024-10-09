@@ -4,6 +4,7 @@ import com.iafenvoy.sop.component.SongPowerComponent;
 import com.iafenvoy.sop.item.block.AbstractSongCubeBlock;
 import com.iafenvoy.sop.util.Serializable;
 import com.iafenvoy.sop.util.Tickable;
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
@@ -53,6 +54,13 @@ public class SongPowerData implements Serializable, Tickable {
         this.supportium.tick();
         if (this.player.getEntityWorld() instanceof ServerWorld serverWorld)
             PowerMergeHelper.run(this, this.player, serverWorld);
+    }
+
+    public void dropAll(){
+        this.aggressium.drop();
+        this.mobilium.drop();
+        this.protisium.drop();
+        this.supportium.drop();
     }
 
     public boolean isDirty() {
@@ -190,21 +198,16 @@ public class SongPowerData implements Serializable, Tickable {
             return this.activePower;
         }
 
+        public void drop() {
+            Block.dropStack(this.getPlayer().getEntityWorld(), this.getPlayer().getBlockPos(), this.activePower.getStack());
+            this.setActivePower(DummySongPower.EMPTY);
+        }
+
         public void setActivePower(AbstractSongPower<?> activePower) {
             if (!this.activePower.isEmpty() && this.activePower != activePower)
                 this.disable();
             this.activePower = activePower;
             this.parent.markDirty();
-        }
-
-        public ItemStack getHoldItem() {
-            return this.activePower.getStack();
-        }
-
-        public ItemStack pickHoldItem() {
-            AbstractSongPower<?> power = this.activePower;
-            this.setActivePower(DummySongPower.EMPTY);
-            return power.getStack();
         }
 
         public void setHoldItem(ItemStack holdItem) {

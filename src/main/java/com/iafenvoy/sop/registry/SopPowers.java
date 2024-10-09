@@ -108,7 +108,7 @@ public final class SopPowers {
             .onApply(holder -> {//GRAVITY attribute not available before 1.20.5
                 EntityAttributeInstance instance = holder.getPlayer().getAttributes().getCustomInstance(EntityAttributes.GENERIC_MOVEMENT_SPEED);
                 if (instance != null)
-                    instance.addTemporaryModifier(new EntityAttributeModifier(Static.MOBILIGLIDE_UUID, "protesphere", 1, EntityAttributeModifier.Operation.ADDITION));
+                    instance.addTemporaryModifier(new EntityAttributeModifier(Static.MOBILIGLIDE_UUID, "mobiliglide", 1, EntityAttributeModifier.Operation.ADDITION));
             })
             .onTick(holder -> {
                 if (holder.getPlayer().isOnGround() || holder.getPlayer().getAbilities().flying) holder.cancel();

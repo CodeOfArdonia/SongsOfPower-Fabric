@@ -1,0 +1,9 @@
+{
+  "type": "origins:effect_immunity",
+  "effects": [
+    "minecraft:nausea",
+    "minecraft:blindness"
+  ],
+  "inverted": true,
+  "loading_priority": 1
+}

@@ -9,6 +9,8 @@ import com.iafenvoy.sop.world.FakeExplosionBehavior;
 import com.iafenvoy.sop.world.ShrineStructureHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.damage.DamageTypes;
+import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
@@ -49,6 +51,8 @@ public class PowerMergeHelper {
                             else serverWorld.breakBlock(songPos, false);
                             d.setActivePower(newPower);
                             serverWorld.createExplosion(player, DamageUtil.build(player, DamageTypes.EXPLOSION), new FakeExplosionBehavior(), center, 1, false, World.ExplosionSourceType.NONE);
+                            player.addStatusEffect(new StatusEffectInstance(StatusEffects.NAUSEA, 20 * 20));
+                            player.addStatusEffect(new StatusEffectInstance(StatusEffects.BLINDNESS, 18 * 20));
                         }
                         return;
                     }
