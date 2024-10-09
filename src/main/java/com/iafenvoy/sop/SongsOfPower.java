@@ -26,8 +26,9 @@ public class SongsOfPower implements ModInitializer {
         SopGameRules.init();
         SopItems.init();
         SopItemGroups.init();
-        SopSounds.init();
+        SopParticles.init();
         SopPowers.init();
+        SopSounds.init();
         ServerPlayNetworking.registerGlobalReceiver(Static.KEYBINDING_SYNC, (server, player, handler, buf, responseSender) -> {
             PowerCategory type = buf.readEnumConstant(PowerCategory.class);
             SongPowerData data = SongPowerData.byPlayer(player);

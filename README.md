@@ -6,7 +6,21 @@ This mod add song abilities from Songs of War Animation.
 
 ## Usage
 
+### Admin command (Or single player)
+
 `/songpower enable/disable <player>` to enable/disable access to song abilities.
+
+### Combine song cube
+
+#### For 0.4+
+
+Build a shrine structure below. Put song cube in the hole like how to do in Animation.
+Then stand on the `chiseled stone bricks`, look at the song cube and sneak for 3s.
+
+<img src="img/shrine.png" style="width:256px" alt="">
+<img src="img/shrine.gif" style="width:256px" alt="">
+
+#### For 0.4-
 
 `/songpower use/replace` learn ability from song stone in your hand.
 
@@ -44,7 +58,11 @@ This mod add song abilities from Songs of War Animation.
 
 ## My other works
 
-- **Songs of War**: SoW Main Mod [Curseforge](https://www.curseforge.com/minecraft/mc-mods/songs-of-war) | [Modrinth](https://modrinth.com/mod/songs-of-war)
-- **Songs of Origins**: SoW x Origins [Curseforge](https://www.curseforge.com/minecraft/mc-mods/songs-of-origins) | [Modrinth](https://modrinth.com/mod/songs-of-origins)
-- *Songs of Power*: Song abilities [Curseforge](https://www.curseforge.com/minecraft/mc-mods/songs-of-power) | [Modrinth](https://modrinth.com/mod/songs-of-power)
-- **Songs of War RPG**: SoW RPG Modpack [Curseforge](https://www.curseforge.com/minecraft/modpacks/songs-of-war-rpg) | [Modrinth](https://modrinth.com/modpack/songs-of-war-rpg)
+- **Songs of War**: SoW Main
+  Mod [Curseforge](https://www.curseforge.com/minecraft/mc-mods/songs-of-war) | [Modrinth](https://modrinth.com/mod/songs-of-war)
+- **Songs of Origins**: SoW x
+  Origins [Curseforge](https://www.curseforge.com/minecraft/mc-mods/songs-of-origins) | [Modrinth](https://modrinth.com/mod/songs-of-origins)
+- *Songs of Power*: Song
+  abilities [Curseforge](https://www.curseforge.com/minecraft/mc-mods/songs-of-power) | [Modrinth](https://modrinth.com/mod/songs-of-power)
+- **Songs of War RPG**: SoW RPG
+  Modpack [Curseforge](https://www.curseforge.com/minecraft/modpacks/songs-of-war-rpg) | [Modrinth](https://modrinth.com/modpack/songs-of-war-rpg)

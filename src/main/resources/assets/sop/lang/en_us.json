@@ -42,6 +42,7 @@
   "config.sop.power.supporolift.exhaustion": "Supporolift Exhaustion",
   "config.sop.power.supporolift.range": "Supporolift Range",
   "item.sop.protepoint_shield": "Protepoint Shield",
+  "item.sop.shrine_debug": "Shrine Debug Tool",
   "item.sop.song.experimental": "Experimental",
   "itemGroup.sop.main": "Songs of Power",
   "key.category.sop": "Songs of Power",

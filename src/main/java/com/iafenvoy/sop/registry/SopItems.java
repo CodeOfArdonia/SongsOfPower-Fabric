@@ -3,12 +3,14 @@ package com.iafenvoy.sop.registry;
 import com.github.crimsondawn45.fabricshieldlib.lib.object.FabricShieldItem;
 import com.iafenvoy.sop.SongsOfPower;
 import com.iafenvoy.sop.item.ProtepointShieldItem;
+import com.iafenvoy.sop.item.ShrineDebugItem;
 import net.minecraft.item.Item;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
 public final class SopItems {
+    public static final ShrineDebugItem SHRINE_DEBUG = register("shrine_debug", new ShrineDebugItem());
     //Fake Item, should not use in game without song power.
     public static final FabricShieldItem PROTEPOINT_SHIELD = register("protepoint_shield", new ProtepointShieldItem());
 

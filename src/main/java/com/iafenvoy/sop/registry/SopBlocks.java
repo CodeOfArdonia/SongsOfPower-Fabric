@@ -22,10 +22,10 @@ import net.minecraft.util.Rarity;
 
 public class SopBlocks {
     //Block
-    public static final Block AGGRESSIUM_SONG = register("aggressium_song", new AggressiumSongCubeBlock());
-    public static final Block MOBILIUM_SONG = register("mobilium_song", new MobiliumSongCubeBlock());
-    public static final Block PROTISIUM_SONG = register("protisium_song", new ProtisiumSongCubeBlock());
-    public static final Block SUPPORTIUM_SONG = register("supportium_song", new SupportiumSongCubeBlock());
+    public static final AggressiumSongCubeBlock AGGRESSIUM_SONG = register("aggressium_song", new AggressiumSongCubeBlock());
+    public static final MobiliumSongCubeBlock MOBILIUM_SONG = register("mobilium_song", new MobiliumSongCubeBlock());
+    public static final ProtisiumSongCubeBlock PROTISIUM_SONG = register("protisium_song", new ProtisiumSongCubeBlock());
+    public static final SupportiumSongCubeBlock SUPPORTIUM_SONG = register("supportium_song", new SupportiumSongCubeBlock());
     //Block Entity
     public static final BlockEntityType<AggressiumSongCubeBlockEntity> AGGRESSIUM_SONG_TYPE = register("aggressium_song", FabricBlockEntityTypeBuilder.create(AggressiumSongCubeBlockEntity::new, AGGRESSIUM_SONG).build());
     public static final BlockEntityType<MobiliumSongCubeBlockEntity> MOBILIUM_SONG_TYPE = register("mobilium_song", FabricBlockEntityTypeBuilder.create(MobiliumSongCubeBlockEntity::new, MOBILIUM_SONG).build());

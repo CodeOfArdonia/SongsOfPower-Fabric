@@ -1,7 +1,7 @@
 {
-  "parent":"fabricshieldlib:item/fabric_shield",
-  "textures":{
-    "shield":"sop:item/protepoint_shield"
+  "parent": "fabricshieldlib:item/fabric_shield",
+  "textures": {
+    "shield": "sop:item/protepoint_shield"
   },
   "overrides": [
     {

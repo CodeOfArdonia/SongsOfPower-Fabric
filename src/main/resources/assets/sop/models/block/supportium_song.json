@@ -1,6 +1,6 @@
 {
-   "parent": "block/cube_all",
-   "textures": {
-       "all": "sop:block/supportium_song"
-   }
+  "parent": "block/cube_all",
+  "textures": {
+    "all": "sop:block/supportium_song"
+  }
 }

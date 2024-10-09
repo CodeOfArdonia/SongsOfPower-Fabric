@@ -1,15 +1,15 @@
 package com.iafenvoy.sop.power;
 
 import com.iafenvoy.neptune.object.DamageUtil;
-import com.iafenvoy.neptune.util.RandomHelper;
+import com.iafenvoy.neptune.util.Color4i;
 import com.iafenvoy.sop.item.block.AbstractSongCubeBlock;
 import com.iafenvoy.sop.item.block.entity.AbstractSongCubeBlockEntity;
+import com.iafenvoy.sop.registry.SopParticles;
 import com.iafenvoy.sop.world.FakeExplosionBehavior;
 import com.iafenvoy.sop.world.ShrineStructureHelper;
 import net.minecraft.block.BlockState;
 import net.minecraft.entity.damage.DamageTypes;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.particle.ParticleTypes;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
@@ -38,11 +38,12 @@ public class PowerMergeHelper {
                     BlockState songState = serverWorld.getBlockState(songPos);
                     if (songState.getBlock() instanceof AbstractSongCubeBlock songCubeBlock && serverWorld.getBlockEntity(songPos) instanceof AbstractSongCubeBlockEntity blockEntity && ShrineStructureHelper.match(mergeData.sneakPos, serverWorld)) {
                         Vec3d center = songPos.toCenterPos();
-                        if (mergeData.sneakTick >= 20 && mergeData.sneakTick <= 60) {
-                            serverWorld.spawnParticles(ParticleTypes.FLAME, center.getX(), center.getY(), center.getZ(), 2, RandomHelper.nextDouble(-0.5, 0.5), RandomHelper.nextDouble(-0.5, 0.5), RandomHelper.nextDouble(-0.5, 0.5), 0.1);
-                        }
+                        PowerCategory category = songCubeBlock.getCategory();
+                        Color4i color = category.getColor();
+                        if (mergeData.sneakTick >= 20 && mergeData.sneakTick <= 60)
+                            serverWorld.spawnParticles(SopParticles.SONG_EFFECT, center.getX(), center.getY(), center.getZ(), 0, color.getR(), color.getG(), color.getB(), 1);
                         if (mergeData.sneakTick == 60) {
-                            SongPowerData.SinglePowerData d = songPowerData.get(songCubeBlock.getCategory());
+                            SongPowerData.SinglePowerData d = songPowerData.get(category);
                             AbstractSongPower<?> newPower = blockEntity.getPower();
                             if (d.hasPower()) blockEntity.setPower(d.getActivePower());
                             else serverWorld.breakBlock(songPos, false);

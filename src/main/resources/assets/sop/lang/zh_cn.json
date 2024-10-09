@@ -42,6 +42,7 @@
   "config.sop.power.supporolift.exhaustion": "地升疲惫度",
   "config.sop.power.supporolift.range": "地升范围",
   "item.sop.protepoint_shield": "守核之盾",
+  "item.sop.shrine_debug": "神坛测试工具",
   "item.sop.song.experimental": "实验性歌之力",
   "itemGroup.sop.main": "战争之歌：歌之力",
   "key.category.sop": "战争之歌：歌之力",

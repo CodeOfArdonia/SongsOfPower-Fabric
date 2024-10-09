@@ -15,6 +15,7 @@ public final class SopItemGroups {
             .displayName(Text.translatable("itemGroup." + SongsOfPower.MOD_ID + ".main"))
             .icon(() -> new ItemStack(SopBlocks.AGGRESSIUM_SONG))
             .entries((displayContext, entries) -> {
+                entries.add(SopItems.SHRINE_DEBUG);
                 entries.add(SopBlocks.AGGRESSIUM_SONG);
                 entries.add(SopBlocks.MOBILIUM_SONG);
                 entries.add(SopBlocks.PROTISIUM_SONG);

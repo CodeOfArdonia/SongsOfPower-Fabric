@@ -33,6 +33,7 @@ public class ShrineStructureHelper {
     }
 
     public static boolean match(BlockPos playerPos, ServerWorld world) {
+        if(!world.getBlockState(playerPos.down()).isOf(Blocks.CHISELED_STONE_BRICKS)) return false;
         List<StructureTemplate.StructureBlockInfo> blocks = getBlocks(world);
         if (blocks.isEmpty()) return false;
         playerPos = playerPos.add(-7, -1, -7);
