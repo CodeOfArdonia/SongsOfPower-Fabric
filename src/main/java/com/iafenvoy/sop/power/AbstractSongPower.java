@@ -2,7 +2,7 @@ package com.iafenvoy.sop.power;
 
 import com.iafenvoy.neptune.object.SoundUtil;
 import com.iafenvoy.sop.SongsOfPower;
-import com.iafenvoy.sop.item.SongCubeItem;
+import com.iafenvoy.sop.item.block.AbstractSongCubeBlock;
 import it.unimi.dsi.fastutil.objects.Object2FloatFunction;
 import it.unimi.dsi.fastutil.objects.Object2IntFunction;
 import net.minecraft.item.ItemStack;
@@ -12,11 +12,14 @@ import net.minecraft.util.Identifier;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public sealed abstract class AbstractSongPower<T extends AbstractSongPower<T>> permits DelaySongPower, DummySongPower, InstantSongPower, IntervalSongPower, PersistSongPower {
     public static final List<AbstractSongPower<?>> POWERS = new ArrayList<>();
+    public static final Map<String, AbstractSongPower<?>> BY_ID = new HashMap<>();
     private final String id;
     private final PowerCategory category;
     private Object2IntFunction<SongPowerDataHolder> primaryCooldownSupplier = data -> 0, secondaryCooldownSupplier = data -> 0;
@@ -32,13 +35,14 @@ public sealed abstract class AbstractSongPower<T extends AbstractSongPower<T>> p
         this.category = category;
         if (category != null) {
             POWERS.add(this);
+            BY_ID.put(id, this);
             category.registerPower(this);
         }
     }
 
     public ItemStack getStack() {
-        ItemStack stack = new ItemStack(SongCubeItem.SONGS.getOrDefault(this.category, Items.AIR));
-        stack.getOrCreateNbt().putString(SongCubeItem.POWER_TYPE_KEY, this.id);
+        ItemStack stack = new ItemStack(AbstractSongCubeBlock.SONGS.getOrDefault(this.category, Items.AIR));
+        stack.getOrCreateNbt().putString(AbstractSongCubeBlock.POWER_TYPE_KEY, this.id);
         return stack;
     }
 

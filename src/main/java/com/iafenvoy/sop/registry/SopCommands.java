@@ -1,13 +1,14 @@
 package com.iafenvoy.sop.registry;
 
 import com.iafenvoy.sop.SongsOfPower;
-import com.iafenvoy.sop.item.SongCubeItem;
+import com.iafenvoy.sop.item.block.AbstractSongCubeBlock;
 import com.iafenvoy.sop.power.SongPowerData;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 import net.fabricmc.fabric.api.command.v2.CommandRegistrationCallback;
 import net.minecraft.command.argument.EntityArgumentType;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.item.BlockItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
@@ -44,9 +45,9 @@ public final class SopCommands {
         ServerCommandSource source = context.getSource();
         PlayerEntity player = source.getPlayerOrThrow();
         ItemStack stack = player.getMainHandStack();
-        if (stack.getItem() instanceof SongCubeItem songCube) {
+        if (stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof AbstractSongCubeBlock songCube) {
             SongPowerData data = SongPowerData.byPlayer(player);
-            SongPowerData.SinglePowerData singlePowerData = data.get(songCube.getType());
+            SongPowerData.SinglePowerData singlePowerData = data.get(songCube.getCategory());
             if (singlePowerData.getHoldItem().isEmpty()) {
                 singlePowerData.setHoldItem(stack);
                 player.setStackInHand(Hand.MAIN_HAND, ItemStack.EMPTY);
@@ -64,9 +65,9 @@ public final class SopCommands {
         ServerCommandSource source = context.getSource();
         PlayerEntity player = source.getPlayerOrThrow();
         ItemStack stack = player.getMainHandStack();
-        if (stack.getItem() instanceof SongCubeItem songCube) {
+        if (stack.getItem() instanceof BlockItem blockItem && blockItem.getBlock() instanceof AbstractSongCubeBlock songCube) {
             SongPowerData data = SongPowerData.byPlayer(player);
-            SongPowerData.SinglePowerData singlePowerData = data.get(songCube.getType());
+            SongPowerData.SinglePowerData singlePowerData = data.get(songCube.getCategory());
             player.setStackInHand(Hand.MAIN_HAND, singlePowerData.pickHoldItem());
             singlePowerData.setHoldItem(stack);
             source.sendFeedback(() -> Text.translatable("command." + SongsOfPower.MOD_ID + ".use_song.success"), false);

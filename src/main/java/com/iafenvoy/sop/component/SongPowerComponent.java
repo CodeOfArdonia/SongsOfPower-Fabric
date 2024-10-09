@@ -43,6 +43,7 @@ public class SongPowerComponent implements ComponentV3, AutoSyncedComponent, Com
     @Override
     public void tick() {
         this.data.tick();
-        SONG_POWER_COMPONENT.sync(this.entity);
+        if (this.data.isDirty() && !this.entity.getEntityWorld().isClient)
+            SONG_POWER_COMPONENT.sync(this.entity);
     }
 }

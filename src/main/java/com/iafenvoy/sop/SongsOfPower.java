@@ -20,6 +20,7 @@ public class SongsOfPower implements ModInitializer {
         ConfigManager.getInstance().registerConfigHandler(SopConfig.INSTANCE);
         ConfigManager.getInstance().registerServerConfig(SopConfig.INSTANCE, ServerConfigManager.PermissionChecker.IS_OPERATOR);
 
+        SopBlocks.init();
         SopCommands.init();
         SopEntities.init();
         SopGameRules.init();

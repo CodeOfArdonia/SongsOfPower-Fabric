@@ -13,12 +13,12 @@ import net.minecraft.util.Identifier;
 public final class SopItemGroups {
     public static final ItemGroup MAIN = register("main", FabricItemGroup.builder()
             .displayName(Text.translatable("itemGroup." + SongsOfPower.MOD_ID + ".main"))
-            .icon(() -> new ItemStack(SopItems.AGGRESSIUM_SONG))
+            .icon(() -> new ItemStack(SopBlocks.AGGRESSIUM_SONG))
             .entries((displayContext, entries) -> {
-                entries.add(SopItems.AGGRESSIUM_SONG);
-                entries.add(SopItems.MOBILIUM_SONG);
-                entries.add(SopItems.PROTISIUM_SONG);
-                entries.add(SopItems.SUPPORTIUM_SONG);
+                entries.add(SopBlocks.AGGRESSIUM_SONG);
+                entries.add(SopBlocks.MOBILIUM_SONG);
+                entries.add(SopBlocks.PROTISIUM_SONG);
+                entries.add(SopBlocks.SUPPORTIUM_SONG);
                 for (AbstractSongPower<?> power : AbstractSongPower.POWERS)
                     entries.add(power.getStack());
             }).build());
