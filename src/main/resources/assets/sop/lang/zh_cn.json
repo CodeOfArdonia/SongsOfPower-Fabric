@@ -3,7 +3,7 @@
   "block.sop.mobilium_song": "涌动之歌",
   "block.sop.protisium_song": "护佑之歌",
   "block.sop.supportium_song": "援力之歌",
-  "command.sop.use_song.full": "你已经拥有这种歌之力！",
+  "command.sop.success": "操作成功",
   "command.sop.use_song.invalid": "这不是一个歌之石!",
   "command.sop.use_song.success": "成功融合此歌之力！",
   "config.sop.category.power.aggressium": "侵袭之歌",

@@ -17,8 +17,14 @@ This mod add song abilities from Songs of War Animation.
 Build a shrine structure below. Put song cube in the hole like how to do in Animation.
 Then stand on the `chiseled stone bricks`, look at the song cube and sneak for 3s.
 
+If everything is correct, the song cube will start spawning particles. After an explosion, the combination is completed.
+
 <img src="img/shrine.png" style="width:256px" alt="">
 <img src="img/shrine.gif" style="width:256px" alt="">
+
+**Note: 1.The stone bricks and stairs can be any kinds. (mossy/cracked ones, can change through datapack.)**
+
+**2.If you already have one in that category, the previous one will be replaced into the hole.**
 
 #### For 0.4-
 

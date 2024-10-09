@@ -3,7 +3,7 @@
   "block.sop.mobilium_song": "Mobilium Song",
   "block.sop.protisium_song": "Protisium Song",
   "block.sop.supportium_song": "Supportium Song",
-  "command.sop.use_song.full": "You have already obtained this song!",
+  "command.sop.success": "Success!",
   "command.sop.use_song.invalid": "This is not a song cube!",
   "command.sop.use_song.success": "Successfully apply this song!",
   "config.sop.category.power.aggressium": "Aggressium",
